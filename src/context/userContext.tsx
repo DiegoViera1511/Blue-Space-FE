@@ -15,8 +15,8 @@ interface UserContextType{
     setProject:React.Dispatch<React.SetStateAction<{username:string , id:string , name:string}>>,
     fetchToken:()=>void
 }
-export const UserContext = createContext<UserContextType | undefined>(undefined);
-export function UserProvider ({children}){
+export const UserContext = createContext<UserContextType>({} as UserContextType);
+export function UserProvider ({children}: {children: React.ReactNode}){
     const [isAuth , setIsAuth] = useState(false)
     const [openProjectModal , setOpenProjectModal] = useState(false)
     const [openStateOptionsModal , setOpenStateOptionsModal] = useState(false)

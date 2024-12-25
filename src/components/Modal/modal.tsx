@@ -1,6 +1,12 @@
 import { X } from 'lucide-react';
 
-export function Modal({ open , onClose , children }) {
+interface ModalProps{
+    open:boolean,
+    onClose:() => void,
+    children:React.ReactNode
+}
+
+export function Modal({ open , onClose , children } : ModalProps) {
     return(
         <div onClick={onClose}
              className={`fixed inset-0 flex justify-center items-center transition-colors ${
