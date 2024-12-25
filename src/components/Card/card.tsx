@@ -1,7 +1,9 @@
 import {useContext} from "react";
 import {UserContext} from "../../context/userContext.tsx";
-
-export function Card({title}){
+interface CardProps {
+    title: string
+}
+export function Card({title}:CardProps){
     const {
         setOpenInfoCardModal,
     } = useContext(UserContext)

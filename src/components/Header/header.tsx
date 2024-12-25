@@ -1,7 +1,11 @@
 import {useContext} from "react";
 import {UserContext} from "../../context/userContext.tsx";
 
-export function Header({username = "User"}){
+interface HeaderProps {
+    username: string
+}
+
+export function Header({username} : HeaderProps){
     const {
         setOpenProjectModal,
         project

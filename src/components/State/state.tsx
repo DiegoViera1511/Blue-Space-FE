@@ -4,7 +4,11 @@ import {Card} from "../Card/card.tsx";
 import {useContext} from "react";
 import {UserContext} from "../../context/userContext.tsx";
 
-export function State({title}){
+interface StateProps{
+    title:string
+}
+
+export function State({title} : StateProps){
     const {
         setOpenStateOptionsModal,
         setOpenAddCardModal
