@@ -8,7 +8,7 @@ interface HeaderProps {
 export function Header({username} : HeaderProps){
     const {
         setOpenProjectModal,
-        project
+        selectedProject
     } = useContext(UserContext)
     return(
         <header className="
@@ -16,9 +16,11 @@ export function Header({username} : HeaderProps){
             rounded-md  backdrop-blur-sm bg-white/30 
             w-[98%] h-16 box-border shadow-lg items-center justify-between gap-6 px-6"
         >
-            <h1 className="flex items-center justify-center text-2xl bg-gradient-to-r from-blue-500 to-blue-800 bg-clip-text text-transparent">{project.name}</h1>
+            <h1 className="flex items-center max-w[150px] md:max-w[50%] text-xl md:text-2xl bg-gradient-to-r from-blue-500 to-blue-800 bg-clip-text text-transparent truncate whitespace-nowrap overflow-hidden">
+                {selectedProject.name}
+            </h1>
             <div className="flex flex-row items-center justify-between gap-6">
-                <button className="text-blue-800" onClick={() => setOpenProjectModal(true)}>
+                <button className="text-blue-800 text-xl md:text-2xl" onClick={() => setOpenProjectModal(true)}>
                     Projects
                 </button>
                 <div
