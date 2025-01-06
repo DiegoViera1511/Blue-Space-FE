@@ -15,7 +15,7 @@ export function State({title} : StateProps){
     } = useContext(UserContext)
     return(
         <div
-            className="flex flex-col min-w-[75%] max-w-[75%] md:min-w-[20%] md:max-w-[20%] min-h-[20%] rounded-lg h-fit px-1 py-1 m-3 bg-gray-100
+            className="flex flex-col min-w-[75%] sm:min-w-[50%] md:min-w-[40%] lg:min-w-[30%] xl:min-w-[25%] rounded-lg h-fit px-1 py-1 m-3 bg-gray-100
             shadow-lg">
             <div className="flex flex-row justify-between text-ellipsis overflow-hidden px-3 py-2">
                 <p className="font-bold">{title}</p>
