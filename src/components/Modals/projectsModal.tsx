@@ -1,7 +1,7 @@
 import {useContext, useEffect, useState} from "react";
 import {Project} from "../../types.ts";
 import {UserContext} from "../../context/userContext.tsx";
-import {Check, EllipsisVertical} from 'lucide-react';
+import { EllipsisVertical} from 'lucide-react';
 import { Trash2 } from 'lucide-react';
 import { Pencil } from 'lucide-react';
 
@@ -44,11 +44,11 @@ export function ProjectsModal(){
 
     return (
         <div 
-            className={"flex flex-col w-[300px] md:w-[500px] h-[500px] p-5 bg-white gap-4 items-center justify-start"}
+            className={"flex flex-col p-5 bg-white gap-4 items-center justify-start text-sm w-[250px] h-[400px] sm:w-[500px] "}
         >
-            <div className={"flex flex-row w-full justify-between"}>
-                <p className={"text-2xl"}>Projects</p>
-                <button className={"p-2 bg-green-500 rounded"}
+            <div className={"flex flex-row w-full justify-between items-center"}>
+                <p className={"text-sm font-bold"}>Projects</p>
+                <button className={"p-2 text-sm bg-green-500 rounded"}
                         onClick={() => setOpenCreateProject(true)}
                 >
                     New Project
@@ -58,16 +58,16 @@ export function ProjectsModal(){
             {openCreateProject && (
                 <div className={"flex flex-col w-full gap-4"}>
                     <input type="text" placeholder={"Project name"} 
-                           className={"p-2 border border-gray-400 rounded"}
+                           className={" text-sm p-2 border border-gray-400 rounded"}
                            value={newProjectName}
                            onChange={(e) => setNewProjectName(e.target.value)}
                     />
-                    <button className={"p-2 bg-green-500 rounded"}
+                    <button className={"p-2 text-sm bg-green-500 rounded"}
                             onClick={() => handleCreateProject()}
                     >
                         Create
                     </button>
-                    <button className={"p-2 bg-gray-100 rounded"}
+                    <button className={"p-2 text-sm bg-gray-100 rounded"}
                             onClick={() => setOpenCreateProject(false)}
                     >
                         Cancel
@@ -76,21 +76,23 @@ export function ProjectsModal(){
             )}
 
             {projects.length > 0 ? (
-                <div className='flex flex-col-reverse w-full max-h-[400px] overflow-y-auto bg-white gap-4'>
+                <div 
+                    className='flex flex-col-reverse w-full overscroll-x-none max-h-[400px] overflow-y-auto bg-white gap-4'
+                >
                     {projects.map((project) => (
-                        <div className={"flex flex-col h-auto transition-all bg-gray-100 rounded"}>
-                            <div key={project.id}
-                                 className='flex flex-row justify-between w-full h-fit px-5 py-4 '
+                        <div 
+                            key={project.id} 
+                            className={`flex flex-col w-full h-auto border-2 overscroll-x-none transition-all bg-gray-100 rounded 
+                            ${project.id === selectedProject.id ? 'border-green-500' : '' }`}
+                        >
+                            <div 
+                                 className='flex flex-row overscroll-x-none justify-between w-full h-fit px-5 py-4'
                             >
                                 <div
-                                    className='flex flex-row w-full gap-4 items-center'
+                                    className='flex flex-row w-full h-auto overflow-hidden gap-4 items-center'
                                     onClick={() => setSelectedProject(project)}
                                 >
-                                    <h1 className={"max-w-[200px]"} >{project.name}</h1>
-
-                                    {project.id === selectedProject.id &&
-                                        (<Check className={"text-green-500"}/>)
-                                    }
+                                    <p className={"text-ellipsis break-words max-w-[80%]"} >{project.name}</p>
                                 </div>
                                 <button onClick={() => {
                                     setMoreOptions(moreOptions === project.id ? 'id' : project.id)
