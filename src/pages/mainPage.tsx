@@ -4,6 +4,8 @@ import {Modal} from "../components/Modals/modal.tsx";
 import {useContext} from "react";
 import {UserContext} from "../context/userContext.tsx";
 import {ProjectsModal} from "../components/Modals/projectsModal.tsx";
+import {NewStateModal} from "../components/Modals/newStateModal.tsx";
+import {StateOptionsModal} from "../components/Modals/stateOptionsModal.tsx";
 
 export function MainPage() {
     const {
@@ -14,16 +16,22 @@ export function MainPage() {
         openAddCardModal,
         setOpenAddCardModal,
         openInfoCardModal,
-        setOpenInfoCardModal
+        setOpenInfoCardModal,
+        openNewStateModal,
+        setOpenNewStateModal,
+        user
     } = useContext(UserContext)
     return (
         <>
-            <Header username={"Diego"}/>
+            <Header username={user}/>
             <Modal open={openProjectModal} onClose={() => setOpenProjectModal(false)}>
                 <ProjectsModal/>
             </Modal>
+            <Modal open={openNewStateModal} onClose={() => setOpenNewStateModal(false)}>
+                <NewStateModal/>
+            </Modal>
             <Modal open={openStateOptionsModal} onClose={() => setOpenStateOptionsModal(false)}>
-                <div className='flex w-16 h-16 bg-white items-center justify-center'>State Options</div>
+                <StateOptionsModal/>
             </Modal>
             <Modal open={openAddCardModal} onClose={() => setOpenAddCardModal(false)}>
                 <div className='flex w-16 h-16 bg-white items-center justify-center'>Add card</div>
