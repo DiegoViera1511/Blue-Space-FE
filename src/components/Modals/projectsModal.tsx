@@ -1,5 +1,5 @@
 import {useContext, useEffect, useState} from "react";
-import {Project} from "../../types.ts";
+import {ProjectType} from "../../types.ts";
 import {UserContext} from "../../context/userContext.tsx";
 import { EllipsisVertical} from 'lucide-react';
 import { Trash2 } from 'lucide-react';
@@ -7,7 +7,7 @@ import { Pencil } from 'lucide-react';
 
 export function ProjectsModal(){
     const {selectedProject , setSelectedProject , user} = useContext(UserContext)
-    const [projects, setProjects] = useState<Project[]>([])
+    const [projects, setProjects] = useState<ProjectType[]>([])
     const [openCreateProject , setOpenCreateProject] = useState(false)
     const [newProjectName , setNewProjectName] = useState('')
     const [deleteOptions , setDeleteOptions] = useState('id')
@@ -15,7 +15,7 @@ export function ProjectsModal(){
     const [editOptions , setEditOptions] = useState('id')
 
     const handleCreateProject = () => {
-        const newProject : Partial<Project> = {
+        const newProject : Partial<ProjectType> = {
             username: user,
             name : newProjectName,
         }
@@ -36,11 +36,11 @@ export function ProjectsModal(){
     }
 
     useEffect(() => {
-        fetch('http://localhost:8080/api/project')
+        fetch(`http://localhost:8080/api/project?username=${user}`)
             .then(response => response.json())
             .then(data => setProjects(data))
             .catch(error => console.log(error))
-    },[projects])
+    },[user])
 
     return (
         <div 
@@ -157,7 +157,7 @@ export function ProjectsModal(){
                             )}
                             {deleteOptions === project.id && (
                                 <div className={"flex flex-col gap-4 p-3"}>
-                                <div className={"flex flex-col gap-4 p-3 bg-white rounded"}>
+                                    <div className={"flex flex-col gap-4 p-3 bg-white rounded"}>
                                         <p>Delete "{project.name}" ?</p>
                                         <p>Delete this project will also delete its data.</p>
                                     </div>
