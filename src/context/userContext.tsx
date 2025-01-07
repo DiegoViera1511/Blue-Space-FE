@@ -1,5 +1,5 @@
 import {createContext, useState} from "react";
-import {ProjectType, StateType} from "../types.ts";
+import {CardType, ProjectType, StateType} from "../types.ts";
 
 
 interface UserContextType{
@@ -9,6 +9,8 @@ interface UserContextType{
     setUser:React.Dispatch<React.SetStateAction<string>>
     selectedState:StateType,
     setSelectedState:React.Dispatch<React.SetStateAction<StateType>>
+    selectedCard:CardType,
+    setSelectedCard:React.Dispatch<React.SetStateAction<CardType>>,
     openProjectModal:boolean,
     setOpenProjectModal:React.Dispatch<React.SetStateAction<boolean>>,
     openStateOptionsModal:boolean,
@@ -34,6 +36,7 @@ export function UserProvider ({children}: {children: React.ReactNode}){
     const [openInfoCardModal , setOpenInfoCardModal] = useState(false)
     const [selectedProject , setSelectedProject] = useState<ProjectType>({username:"viera" , id:"512777e7-1cb4-4628-9e85-6c2fe4b04f81" , name:"Blue-Space"} as ProjectType)
     const [selectedState , setSelectedState] = useState<StateType>({id:"id" , name:"state" , project_id:"id"} as StateType)
+    const [selectedCard , setSelectedCard] = useState<CardType>({id:"id" , state_id:"id" , title:"title" , text:"text"} as CardType)
     const fetchToken = async () => {
         const token = localStorage.getItem('jwt')
         if (token) {
@@ -70,6 +73,8 @@ export function UserProvider ({children}: {children: React.ReactNode}){
                 setOpenNewStateModal,
                 selectedState,
                 setSelectedState,
+                selectedCard,
+                setSelectedCard,
                 fetchToken
             }}
         >

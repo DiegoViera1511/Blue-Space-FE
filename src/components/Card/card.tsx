@@ -1,20 +1,23 @@
 import {useContext} from "react";
 import {UserContext} from "../../context/userContext.tsx";
-interface CardProps {
-    title: string
-}
-export function Card({title}:CardProps){
+import {CardType} from "../../types.ts";
+
+export function Card({cardProps} : {cardProps: CardType}){
     const {
         setOpenInfoCardModal,
+        setSelectedCard
     } = useContext(UserContext)
     return(
         <div
             className="flex w-[98%] min-h-10 h-auto bg-white 
             border shadow border-gray-400 px-2 py-2 text-ellipsis 
             overflow-hidden rounded-lg cursor-pointer"
-            onClick={() => setOpenInfoCardModal(true)}
+            onClick={() => {
+                setSelectedCard(cardProps)
+                setOpenInfoCardModal(true)
+            }}
         >
-            <p>{title}</p>
+            <p>{cardProps.title}</p>
         </div>
     )
 }
