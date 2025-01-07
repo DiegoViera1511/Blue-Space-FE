@@ -6,6 +6,8 @@ import {UserContext} from "../context/userContext.tsx";
 import {ProjectsModal} from "../components/Modals/projectsModal.tsx";
 import {NewStateModal} from "../components/Modals/newStateModal.tsx";
 import {StateOptionsModal} from "../components/Modals/stateOptionsModal.tsx";
+import {NewCardModal} from "../components/Modals/newCardModal.tsx";
+import {InfoCardModal} from "../components/Modals/InfoCardModal.tsx";
 
 export function MainPage() {
     const {
@@ -34,10 +36,10 @@ export function MainPage() {
                 <StateOptionsModal/>
             </Modal>
             <Modal open={openAddCardModal} onClose={() => setOpenAddCardModal(false)}>
-                <div className='flex w-16 h-16 bg-white items-center justify-center'>Add card</div>
+                <NewCardModal/>
             </Modal>
             <Modal open={openInfoCardModal} onClose={() => setOpenInfoCardModal(false)}>
-                <div className='flex w-16 h-16 bg-white items-center justify-center'>Card Info</div>
+                <InfoCardModal/>
             </Modal>
             <main className="flex flex-row w-screen h-screen items-center justify-center bg-gradient-to-r from-cyan-500 to-blue-500 overscroll-y-none">
                 <StatesContainer/>
