@@ -1,6 +1,34 @@
-import { ArrowRight, Rocket,UserPen } from 'lucide-react';
+import { ArrowRight, Rocket,UserPen,User ,Lock, Check} from 'lucide-react';
+import { useState } from 'react';
+import { Input_1 } from '../components/Input_1/input_1';
+import { UserType } from '../types';
 
 export function LandingPage(){
+    const [onCreateAccount, setOnCreateAccount] = useState(false)
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+    
+    const handleRegister = () => {
+        if (password !== confirmPassword) {
+            alert('Passwords do not match')
+            return
+        }
+        const newUser : UserType = {username: username, password: password}
+        fetch('http://localhost:8080/api/user', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newUser)
+        })
+            .then(response => response.json())
+            .then((data) => {
+                console.log(data)
+            })
+            .catch(error => console.log(error))
+    }
+
     return (
         <>
             <header
@@ -28,9 +56,75 @@ export function LandingPage(){
                         <p className="flex items-center justify-center text-white text-8xl">Welcome to Blue Space !</p>
                         <p className="flex items-center justify-center text-white text-4xl">Organize your tasks, boost your productivity 🚀</p>
                     </div> 
-                    <button className='flex flex-row gap-4 text-white border-2 rounded-lg mt-10 p-3'>
-                        Create new Account <UserPen/>
-                    </button>
+                    {! onCreateAccount && (
+                        <button
+                        className='flex flex-row gap-4 text-white border-2 rounded-lg mt-10 p-3 transition-all'
+                        onClick={() => setOnCreateAccount(true)}
+                        >
+                            <p>Create new Account</p>
+                            <UserPen/>
+                        </button>
+                    )}
+                
+                    {onCreateAccount && (
+                        <div className='flex flex-col gap-4 text-white border-2 rounded-lg mt-10 p-3 items-center justify-center'>
+                            <p>Create new Account</p>
+                            <div className='flex flex-col gap-4 items-start justify-center'>
+                                <div className='flex flex-row gap-2 items-center justify-center'>
+                                    <label form="register_username"><User/></label>
+                                    <Input_1
+                                        id="register_username"
+                                        input_type="text"
+                                        value={username}
+                                        onChange={setUsername}
+                                        required={true}
+                                        placeholder="User name"
+                                    />
+                                </div>
+                                <div className='flex flex-row gap-2 items-center justify-center'>
+                                    <label form="register_password"><Lock/></label>
+                                    <Input_1
+                                        id="register_password"
+                                        input_type="password"
+                                        value={password}
+                                        onChange={setPassword}
+                                        required={true}
+                                        placeholder="Password"
+                                    />
+                                </div>
+                                <div className='flex flex-row gap-2 items-center justify-center'>
+                                    <label form="register_confirm"><Check/></label>
+                                    <Input_1
+                                        id="register_confirm"
+                                        input_type="password"
+                                        value={confirmPassword}
+                                        onChange={setConfirmPassword}
+                                        required={true}
+                                        placeholder="Confirm password"
+                                    />
+                                </div>
+                            </div>
+                            <div className='flex flex-row gap-4 items-center justify-center'>
+                                <button onClick={() => { 
+                                    setOnCreateAccount(false) 
+                                    setConfirmPassword('')
+                                    setUsername('')
+                                    setPassword('')
+                                }}>
+                                    Cancel
+                                </button>
+                                <button
+                                    type='submit'
+                                    onClick={() => {
+                                        handleRegister()
+                                        setOnCreateAccount(false)
+                                    }}
+                                >
+                                    Register
+                                </button>
+                            </div>
+                        </div>
+                    )}
                 </section>
             </main>
         </>

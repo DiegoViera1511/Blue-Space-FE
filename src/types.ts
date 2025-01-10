@@ -22,3 +22,10 @@ export interface CardType{
 }
 
 export const defaultCardType : CardType = {id:"id" , state_id:"id" , title:"title" , text:"text"}
+
+export interface UserType{
+    username:string;
+    password:string;
+}
+
+export const defaultUserType : UserType = {username:"username" , password:"password"}
