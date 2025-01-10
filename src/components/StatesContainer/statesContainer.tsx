@@ -8,6 +8,7 @@ export function StatesContainer(){
     const {selectedProject , setOpenNewStateModal, openNewStateModal , openStateOptionsModal} = useContext(UserContext)
     
     useEffect(() => {
+        if(selectedProject.id === '') return
         fetch(`http://localhost:8080/api/state?project_id=${selectedProject.id}`)
             .then(response => response.json())
             .then(data => setStates(data))

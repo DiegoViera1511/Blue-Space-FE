@@ -1,13 +1,19 @@
 import { ArrowRight, Rocket,UserPen,User ,Lock, Check} from 'lucide-react';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Input_1 } from '../components/Input_1/input_1';
 import { UserType } from '../types';
+import { Modal } from '../components/Modals/modal';
+import { LogInModal } from '../components/Modals/logInModal';
+import { UserContext } from '../context/userContext';
+import { Navigate } from 'react-router-dom';
 
 export function LandingPage(){
+    const {fetchToken , isAuth} = useContext(UserContext)
     const [onCreateAccount, setOnCreateAccount] = useState(false)
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+    const [openLogIn , setOpenLogIn] = useState(false)
     
     const handleRegister = () => {
         if (password !== confirmPassword) {
@@ -29,6 +35,14 @@ export function LandingPage(){
             .catch(error => console.log(error))
     }
 
+    useEffect(() => {
+        fetchToken()
+    }, [isAuth])
+
+    if(isAuth){
+        return <Navigate to={"/main"}/>
+    }
+
     return (
         <>
             <header
@@ -42,10 +56,13 @@ export function LandingPage(){
                     Blue Space
                 </div>
                 
-                <button className='flex flex-row items-center justify-center gap-4 text-xl sm:text-2xl'>
+                <button onClick={() => setOpenLogIn(true)} className='flex flex-row items-center justify-center gap-4 text-xl sm:text-2xl'>
                     Log in <ArrowRight/>
                 </button>
             </header>
+            <Modal open={openLogIn} onClose={() => setOpenLogIn(false)}>
+                <LogInModal setCloseModal={setOpenLogIn}/>
+            </Modal>
             <main
                 className="gap-4 w-screen h-screen items-center justify-center bg-gradient-to-b from-cyan-500 to-blue-500"
             >
