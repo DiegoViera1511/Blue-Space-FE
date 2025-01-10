@@ -41,7 +41,7 @@ export function MainPage() {
             <Modal open={openInfoCardModal} onClose={() => setOpenInfoCardModal(false)}>
                 <InfoCardModal/>
             </Modal>
-            <main className="flex flex-row w-screen h-screen items-center justify-center bg-gradient-to-r from-cyan-500 to-blue-500 overscroll-y-none">
+            <main className="flex flex-row w-screen h-screen items-center justify-center bg-gradient-to-b from-cyan-500 to-blue-500 overscroll-y-none">
                 <StatesContainer/>
             </main>
         </>
