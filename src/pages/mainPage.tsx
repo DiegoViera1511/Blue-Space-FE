@@ -8,6 +8,7 @@ import {NewStateModal} from "../components/Modals/newStateModal.tsx";
 import {StateOptionsModal} from "../components/Modals/stateOptionsModal.tsx";
 import {NewCardModal} from "../components/Modals/newCardModal.tsx";
 import {InfoCardModal} from "../components/Modals/InfoCardModal.tsx";
+import { Navigate } from "react-router-dom";
 
 export function MainPage() {
     const {
@@ -21,8 +22,14 @@ export function MainPage() {
         setOpenInfoCardModal,
         openNewStateModal,
         setOpenNewStateModal,
-        user
+        user,
+        isAuth
     } = useContext(UserContext)
+
+    if(!isAuth){
+        return <Navigate to={"/"}/>
+    }
+
     return (
         <>
             <Header username={user}/>

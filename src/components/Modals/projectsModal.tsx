@@ -36,6 +36,7 @@ export function ProjectsModal(){
     }
 
     useEffect(() => {
+        if(user === '') return
         fetch(`http://localhost:8080/api/project?username=${user}`)
             .then(response => response.json())
             .then(data => setProjects(data))

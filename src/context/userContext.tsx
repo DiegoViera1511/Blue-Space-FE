@@ -1,6 +1,5 @@
 import {createContext, useState} from "react";
-import {CardType, ProjectType, StateType} from "../types.ts";
-
+import {CardType, ProjectType, StateType,defaultProyectType, defaultCardType , defaultStateType} from "../types.ts";
 
 interface UserContextType{
     isAuth:boolean,
@@ -28,29 +27,33 @@ interface UserContextType{
 export const UserContext = createContext<UserContextType>({} as UserContextType);
 export function UserProvider ({children}: {children: React.ReactNode}){
     const [isAuth , setIsAuth] = useState(false)
-    const [user , setUser] = useState('viera')
+    const [user , setUser] = useState<string>('')
     const [openProjectModal , setOpenProjectModal] = useState(false)
     const [openStateOptionsModal , setOpenStateOptionsModal] = useState(false)
     const [openNewStateModal , setOpenNewStateModal] = useState(false)
     const [openAddCardModal , setOpenAddCardModal] = useState(false)
     const [openInfoCardModal , setOpenInfoCardModal] = useState(false)
-    const [selectedProject , setSelectedProject] = useState<ProjectType>({username:"viera" , id:"512777e7-1cb4-4628-9e85-6c2fe4b04f81" , name:"Blue-Space"} as ProjectType)
-    const [selectedState , setSelectedState] = useState<StateType>({id:"id" , name:"state" , project_id:"id"} as StateType)
-    const [selectedCard , setSelectedCard] = useState<CardType>({id:"id" , state_id:"id" , title:"title" , text:"text"} as CardType)
+    const [selectedProject , setSelectedProject] = useState<ProjectType>(defaultProyectType)
+    const [selectedState , setSelectedState] = useState<StateType>(defaultStateType)
+    const [selectedCard , setSelectedCard] = useState<CardType>(defaultCardType)
     const fetchToken = async () => {
         const token = localStorage.getItem('jwt')
         if (token) {
-            const response = await fetch(
-                'route', {
+            await fetch('http://localhost:8080/api/user/token/checktoken', {
                     method: 'GET',
                     headers: {
                         Authorization: `Bearer ${token}`
                     },
                 })
-            if (response.status === 200) {
-                setIsAuth(true)
-            }
-        }
+                    .then(response => response.json())
+                    .then((data) => {
+                        if (data.username){
+                            setUser(data.username)
+                            setIsAuth(true)
+                        }
+                    })
+                    .catch(error => console.log(error))
+        }   
     }
     return(
         <UserContext.Provider

@@ -4,7 +4,7 @@ export interface ProjectType{
     name:string;
 }
 
-export const defalutProyectType : ProjectType = {id:"id" , username:"username" , name:"name"}
+export const defaultProyectType : ProjectType = {id:"" , username:"" , name:""}
 
 export interface StateType {
     id:string;
@@ -12,7 +12,7 @@ export interface StateType {
     name:string
 }
 
-export const defaultStateType : StateType = {id:"id" , project_id:"id" , name:"name"}
+export const defaultStateType : StateType = {id:"" , project_id:"" , name:""}
 
 export interface CardType{
     id:string, 
@@ -21,11 +21,11 @@ export interface CardType{
     text:string
 }
 
-export const defaultCardType : CardType = {id:"id" , state_id:"id" , title:"title" , text:"text"}
+export const defaultCardType : CardType = {id:"" , state_id:"" , title:"" , text:""}
 
 export interface UserType{
     username:string;
     password:string;
 }
 
-export const defaultUserType : UserType = {username:"username" , password:"password"}
+export const defaultUserType : UserType = {username:"" , password:""}
