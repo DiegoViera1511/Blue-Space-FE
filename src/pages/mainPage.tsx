@@ -23,6 +23,7 @@ export function MainPage() {
         openNewStateModal,
         setOpenNewStateModal,
         user,
+        selectedProject,
         isAuth
     } = useContext(UserContext)
 
@@ -48,8 +49,21 @@ export function MainPage() {
             <Modal open={openInfoCardModal} onClose={() => setOpenInfoCardModal(false)}>
                 <InfoCardModal/>
             </Modal>
-            <main className="flex flex-row w-screen h-screen items-center justify-center bg-gradient-to-b from-cyan-500 to-blue-500 overscroll-y-none">
-                <StatesContainer/>
+            <main className="flex flex-row w-screen h-screen items-center justify-center bg-gray-200 overscroll-y-none">
+                <>
+                    {selectedProject.id === "" ? (
+                        <div className="flex flex-row items-center justify-center mt-12 w-full h-[85%]">
+                            <div className="flex items-center justify-center shadow-md p-3 rounded-lg">
+                                <p className="text-4xl text-cyan-700 font-bold">
+                                    No project selected !
+                                </p>
+                            </div>
+                        </div>
+                    )
+                    : (
+                        <StatesContainer/>
+                    )}
+                </>
             </main>
         </>
 
