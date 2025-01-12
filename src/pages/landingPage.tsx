@@ -37,7 +37,7 @@ export function LandingPage(){
 
     useEffect(() => {
         fetchToken()
-    }, [isAuth])
+    }, [fetchToken, isAuth])
 
     if(isAuth){
         return <Navigate to={"/main"}/>
