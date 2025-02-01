@@ -1,13 +1,13 @@
-import { X } from 'lucide-react';
+import {X} from 'lucide-react';
 
-interface ModalProps{
-    open:boolean,
-    onClose:() => void,
-    children:React.ReactNode
+interface ModalProps {
+    open: boolean,
+    onClose: () => void,
+    children: React.ReactNode
 }
 
-export function Modal({ open , onClose , children } : ModalProps) {
-    return(
+export function Modal({open, onClose, children}: ModalProps) {
+    return (
         <div onClick={onClose}
              className={`fixed inset-0 flex justify-center items-center transition-colors ${
                  open ? 'visible bg-black/20' : 'invisible'}`}
