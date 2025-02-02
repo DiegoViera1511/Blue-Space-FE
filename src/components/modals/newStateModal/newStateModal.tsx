@@ -5,14 +5,21 @@ import {StatesContext} from "../../../context/statesContext.tsx";
 import {SimpleButton} from "../../common/simpleButton/simpleButton.tsx";
 import {Modal} from "../../common/modal/modal.tsx";
 
-export function NewStateModal() {
+interface NewStateModalProps {
+    open: boolean,
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>,
+    position: number
+}
+
+export function NewStateModal({open , setOpen,position}: NewStateModalProps) {
 
     const {selectedProject} = useContext(UserContext)
-    const {handleRefreshStateContainer, openNewStateModal, setOpenNewStateModal} = useContext(StatesContext)
+    const {handleRefreshStateContainer} = useContext(StatesContext)
     const [newStateName, setNewStateName] = useState('')
 
     const handleCreateState = () => {
         const newState: Partial<StateType> = {
+            position: position,
             project_id: selectedProject.id,
             name: newStateName
         }
@@ -26,12 +33,12 @@ export function NewStateModal() {
             .then(() => {
                 setNewStateName('')
                 handleRefreshStateContainer()
-                setOpenNewStateModal(false)
+                setOpen(false)
             })
             .catch(error => console.log(error))
     }
     return (
-        <Modal open={openNewStateModal} onClose={() => setOpenNewStateModal(false)}>
+        <Modal open={open} onClose={() => setOpen(false)}>
             <div
                 className={"flex flex-col p-5 bg-white gap-4 justify-center text-sm w-[250px] sm:w-[500px] "}
             >
@@ -44,7 +51,7 @@ export function NewStateModal() {
                 />
                 <div className="flex flex-row gap-4 items-center justify-center">
                     <SimpleButton
-                        onClick={() => setOpenNewStateModal(false)}
+                        onClick={() => setOpen(false)}
                         text={"Cancel"}
                     />
                     <SimpleButton

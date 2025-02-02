@@ -11,13 +11,13 @@ import {NewCardModal} from '../modals/newCardModal/newCardModal.tsx';
 export function State({stateProps}: { stateProps: StateType }) {
 
     const {
-        setOpenStateOptionsModal,
         setSelectedState,
-        setOpenAddCardModal,
         handleRefreshState
     } = useContext(StatesContext)
 
     const [cards, setCards] = useState<CardType[]>([])
+    const [openNewCardModal ,setOpenNewCardModal] = useState(false)
+    const [openStateOptionsModal, setOpenStateOptionsModal] = useState(false)
 
     useEffect(() => {
         fetch(`http://localhost:8080/api/card?state_id=${stateProps.id}`)
@@ -54,15 +54,15 @@ export function State({stateProps}: { stateProps: StateType }) {
                         )}
                     </div>
                     <button className={"m-5 w-fit h-fit"} onClick={() => {
-                        setOpenAddCardModal(true)
+                        setOpenNewCardModal(true)
                         setSelectedState(stateProps)
                     }}>
                         <Plus/>
                     </button>
                 </div>
             </div>
-            <StateOptionsModal/>
-            <NewCardModal/>
+            <StateOptionsModal open={openStateOptionsModal} setOpen={setOpenStateOptionsModal}/>
+            <NewCardModal open={openNewCardModal} setOpen={setOpenNewCardModal} position={cards.length}/>
         </>
 
     )

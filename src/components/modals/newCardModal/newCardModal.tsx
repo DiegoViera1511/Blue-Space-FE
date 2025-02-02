@@ -4,20 +4,26 @@ import {StatesContext} from "../../../context/statesContext.tsx";
 import {Modal} from "../../common/modal/modal.tsx";
 import {SimpleButton} from "../../common/simpleButton/simpleButton.tsx";
 
+interface NewCardModalProps {
+    open: boolean,
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>
+    position: number
+}
 
-export function NewCardModal() {
+export function NewCardModal({open, setOpen, position}: NewCardModalProps) {
     const [newCardName, setNewCardName] = useState('')
     const [newCardText, setNewCardText] = useState('')
 
-    const {selectedState, setOpenAddCardModal, openAddCardModal, handleRefreshState} = useContext(StatesContext)
+    const {selectedState, handleRefreshState} = useContext(StatesContext)
 
     useEffect(() => {
         setNewCardName('')
         setNewCardText('')
-    }, [openAddCardModal]);
+    }, [position]);
 
     const handleCreateCard = () => {
         const newCard: Partial<CardType> = {
+            position: position,
             title: newCardName,
             text: newCardText,
             state_id: selectedState.id
@@ -31,14 +37,14 @@ export function NewCardModal() {
         })
             .then(response => response.json())
             .then(() => {
-                setOpenAddCardModal(false)
+                setOpen(false)
                 handleRefreshState()
             })
             .catch(error => console.log(error))
     }
 
     return (
-        <Modal open={openAddCardModal} onClose={() => setOpenAddCardModal(false)}>
+        <Modal open={open} onClose={() => setOpen(false)}>
             <div
                 className={"flex flex-col p-5 bg-white gap-4 justify-start text-sm w-[280px] h-fit sm:w-[500px] "}
             >
@@ -63,7 +69,7 @@ export function NewCardModal() {
                     />
                     <div className={"flex flex-row gap-4 items-center justify-center"}>
                         <SimpleButton
-                            onClick={() => setOpenAddCardModal(false)}
+                            onClick={() => setOpen(false)}
                             text={"Cancel"}
                             cn={"bg-gray-100"}
                         />

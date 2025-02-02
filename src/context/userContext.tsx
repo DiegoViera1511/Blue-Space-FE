@@ -8,18 +8,17 @@ interface UserContextType {
     setUser: React.Dispatch<React.SetStateAction<string>>
     selectedProject: ProjectType,
     setSelectedProject: React.Dispatch<React.SetStateAction<ProjectType>>,
-    openDeleteWarning: boolean,
-    setOpenDeleteWarning: React.Dispatch<React.SetStateAction<boolean>>,
     fetchToken: () => void
 }
 
 export const UserContext = createContext<UserContextType>({} as UserContextType);
 
 export function UserProvider({children}: { children: React.ReactNode }) {
+    
     const [isAuth, setIsAuth] = useState(false)
     const [user, setUser] = useState<string>('')
     const [selectedProject, setSelectedProject] = useState<ProjectType>(defaultProyectType)
-    const [openDeleteWarning, setOpenDeleteWarning] = useState(false)
+    
     const fetchToken = async () => {
         const token = localStorage.getItem('jwt')
         if (token) {
@@ -48,8 +47,6 @@ export function UserProvider({children}: { children: React.ReactNode }) {
                 setUser,
                 selectedProject,
                 setSelectedProject,
-                openDeleteWarning,
-                setOpenDeleteWarning,
                 fetchToken
             }}
         >

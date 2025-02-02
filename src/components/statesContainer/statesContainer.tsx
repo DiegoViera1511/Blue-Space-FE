@@ -10,8 +10,9 @@ export function StatesContainer() {
 
     const [states, setStates] = useState<StateType[]>([])
     const {selectedProject} = useContext(UserContext)
-    const {refreshStateContainer, setOpenNewStateModal} = useContext(StatesContext)
-
+    const {refreshStateContainer} = useContext(StatesContext)
+    const [openNewStateModal , setOpenNewStateModal] = useState(false)
+    
     useEffect(() => {
         if (selectedProject.id === '') return
         fetch(`http://localhost:8080/api/state?project_id=${selectedProject.id}`)
@@ -44,7 +45,7 @@ export function StatesContainer() {
                     </div>
                 </div>
             </div>
-            <NewStateModal/>
+            <NewStateModal open={openNewStateModal} setOpen={setOpenNewStateModal} position={states.length}/>
         </>
     )
 }
