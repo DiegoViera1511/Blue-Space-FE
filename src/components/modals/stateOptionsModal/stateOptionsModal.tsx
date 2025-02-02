@@ -5,10 +5,15 @@ import {Modal} from "../../common/modal/modal.tsx";
 import {SimpleButton} from "../../common/simpleButton/simpleButton.tsx";
 import {DeleteWarningModal} from "../deleteWarning/deleteWarningModal.tsx";
 
-export function StateOptionsModal() {
+interface StateOptionsModalProps {
+    open: boolean;
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export function StateOptionsModal({open , setOpen} : StateOptionsModalProps) {
     const {selectedState} = useContext(StatesContext)
 
-    const {handleRefreshStateContainer, setOpenStateOptionsModal, openStateOptionsModal} = useContext(StatesContext)
+    const {handleRefreshStateContainer} = useContext(StatesContext)
 
     const [deleteOptions, setDeleteOptions] = useState(false)
     const [editOptions, setEditOptions] = useState(false)
@@ -26,7 +31,7 @@ export function StateOptionsModal() {
             .then(() => {
                 setEditOptions(false)
                 handleRefreshStateContainer()
-                setOpenStateOptionsModal(false)
+                setOpen(false)
             })
             .catch(error => console.log(error))
     }
@@ -39,7 +44,7 @@ export function StateOptionsModal() {
             .then(() => {
                 setDeleteOptions(false)
                 handleRefreshStateContainer()
-                setOpenStateOptionsModal(false)
+                setOpen(false)
             })
             .catch(error => console.log(error))
     }
@@ -52,7 +57,7 @@ export function StateOptionsModal() {
 
     return (
         <>
-            <Modal open={openStateOptionsModal} onClose={() => setOpenStateOptionsModal(false)}>
+            <Modal open={open} onClose={() => setOpen(false)}>
                 <div
                     className={"flex flex-col p-5 bg-white gap-4 justify-start text-sm w-[250px] h-fit sm:w-[500px] "}
                 >
@@ -110,7 +115,7 @@ export function StateOptionsModal() {
                 setOpen={setDeleteOptions}
                 objectName={selectedState.name}
                 objectType={"State"}
-                handleDelete={() => handleDeleteState}
+                handleDelete={() => handleDeleteState(selectedState.id)}
             />
         </>
 

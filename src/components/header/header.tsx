@@ -1,7 +1,6 @@
 import {useContext, useState} from "react";
 import {UserContext} from "../../context/userContext.tsx";
 import {Rocket} from "lucide-react";
-import {Modal} from "../common/modal/modal.tsx";
 import {ProjectsModal} from "../modals/projectsModal/projectsModal.tsx";
 import {HeaderButton} from "./headerButton/headerButton.tsx";
 import {UserContainer} from "../userContainer/userContainer.tsx";
@@ -47,9 +46,7 @@ export function Header({username}: HeaderProps) {
                     />
                 </div>
             </header>
-            <Modal open={openProjectModal} onClose={() => setOpenProjectModal(false)}>
-                <ProjectsModal/>
-            </Modal>
+            <ProjectsModal open={openProjectModal} setOpen={setOpenProjectModal}/>
         </>
     )
 }

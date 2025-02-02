@@ -1,16 +1,15 @@
-import {useContext} from "react";
+import {useContext, useState} from "react";
 import {CardType} from "../../types.ts";
 import {InfoCardModal} from "../modals/infoCardModal/infoCardModal.tsx";
-import {Modal} from "../common/modal/modal.tsx";
 import {StatesContext} from "../../context/statesContext.tsx";
 
 export function Card({cardProps}: { cardProps: CardType }) {
     const {
         setSelectedCard,
-        setOpenInfoCardModal,
-        openInfoCardModal
     } = useContext(StatesContext)
-
+    
+    const [openInfoCardModal , setOpenInfoCardModal] = useState(false)
+    
     return (
         <>
             <div
@@ -24,9 +23,7 @@ export function Card({cardProps}: { cardProps: CardType }) {
             >
                 <p>{cardProps.title}</p>
             </div>
-            <Modal open={openInfoCardModal} onClose={() => setOpenInfoCardModal(false)}>
-                <InfoCardModal/>
-            </Modal>
+            <InfoCardModal open={openInfoCardModal} setOpen={setOpenInfoCardModal}/>
         </>
     )
 }

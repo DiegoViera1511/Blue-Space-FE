@@ -1,6 +1,5 @@
 import {Rocket} from 'lucide-react';
 import {useContext, useEffect, useState} from 'react';
-import {Modal} from '../components/common/modal/modal.tsx';
 import {LogInModal} from '../components/modals/logInModal/logInModal.tsx';
 import {UserContext} from '../context/userContext';
 import {Navigate} from 'react-router-dom';
@@ -36,9 +35,7 @@ export function LandingPage() {
                     Sign in <LogIn/>
                 </button>
             </header>
-            <Modal open={openSignIn} onClose={() => setOpenSignIn(false)}>
-                <LogInModal setCloseModal={setOpenSignIn}/>
-            </Modal>
+            <LogInModal open={openSignIn} setOpen={setOpenSignIn}/>
             <main
                 className="gap-4 w-screen h-screen items-center justify-center bg-gradient-to-b from-cyan-500 to-blue-500"
             >
