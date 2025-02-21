@@ -6,7 +6,7 @@ import {CardType, StateType} from "../../types.ts";
 import {StateOptionsModal} from '../modals/stateOptionsModal/stateOptionsModal.tsx';
 import {StatesContext} from '../../context/statesContext.tsx';
 import {NewCardModal} from '../modals/newCardModal/newCardModal.tsx';
-
+import {useDroppable} from "@dnd-kit/core";
 
 export function State({stateProps}: { stateProps: StateType }) {
 
@@ -15,8 +15,12 @@ export function State({stateProps}: { stateProps: StateType }) {
         handleRefreshState
     } = useContext(StatesContext)
 
+    const {setNodeRef} = useDroppable({
+        id: stateProps.id
+    });
+
     const [cards, setCards] = useState<CardType[]>([])
-    const [openNewCardModal ,setOpenNewCardModal] = useState(false)
+    const [openNewCardModal, setOpenNewCardModal] = useState(false)
     const [openStateOptionsModal, setOpenStateOptionsModal] = useState(false)
 
     useEffect(() => {
@@ -41,10 +45,11 @@ export function State({stateProps}: { stateProps: StateType }) {
                         <EllipsisVertical/>
                     </button>
                 </div>
-                <hr className="border-t border-gray-400 mt-2"/>
-                <div className={"flex flex-col"}>
+
+                <div ref={setNodeRef} className={"flex flex-col"}>
                     <div
-                        className="flex flex-col mt-2 mb-2 max-h-[500px] md:max-h-[530px] overflow-y-auto items-center gap-4">
+
+                        className="flex flex-col mt-2 mb-2 max-h-[500px] md:max-h-[530px] overflow-y-auto overflow-x-hidden items-center gap-4 transition-all">
                         {cards.length > 0 ? (
                             cards.map((card) => (
                                 <Card key={card.id} cardProps={card}/>
