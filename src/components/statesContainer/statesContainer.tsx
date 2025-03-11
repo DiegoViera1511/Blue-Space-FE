@@ -13,9 +13,8 @@ export function StatesContainer() {
 
     const [states, setStates] = useState<StateType[]>([])
     const {selectedProject} = useContext(UserContext)
-    const {refreshStateContainer, handleRefreshState} = useContext(StatesContext)
+    const {refreshStateContainer, handleRefreshState , activeId , setActiveId} = useContext(StatesContext)
     const [openNewStateModal, setOpenNewStateModal] = useState(false)
-    const [activeId, setActiveId] = useState<string | null>(null);
     const [activeCard, setActiveCard] = useState<CardType>(defaultCardType)
 
     useEffect(() => {
@@ -29,17 +28,76 @@ export function StatesContainer() {
     const handleDragEnd = async (event: DragEndEvent) => {
         setActiveId(null);
         const {active, over} = event
+        const activeData = event.active.data.current as CardType
+        
         if (!over) return
 
-        const cardId = active.id as string
-        const stateId = over.id as string
+        const activeId = active.id as string
+        const overId = over.id as string
+        
+        const overData = over.data.current
+        
+        //Check if overData is a StateType or a CardType
+        if ((overData as StateType).project_id === undefined) {
+            const overCard = overData as CardType
+            
+            if (activeData.state_id === overCard.state_id){
+                if (activeData.position === overCard.position) return
+                await fetch('http://localhost:8080/api/card/sortPositions',{
+                    method:'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        activePosition: activeData.position,
+                        overPosition: overCard.position,
+                        state_id: activeData.state_id,
+                        activeCardId: activeId
+                    })
+                })
+                    .then(response => response.json())
+                    .then(() => {
+                        handleRefreshState()
+                    })
+                    .catch(error => console.log(error))
+                return
+            }
+            
+            await fetch(`http://localhost:8080/api/card/updateState`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    activePosition: activeData.position,
+                    overPosition: overCard.position,
+                    activeStateId: activeData.state_id,
+                    overStateId: overCard.state_id,
+                    activeCardId: activeId
+                })
+            })
+                .then(response => response.json())
+                .then(() => {
+                    handleRefreshState()
+                })
+                .catch(error => console.log(error))
+            return
+        }
+        
+        if (activeData.state_id === overId) return
 
-        await fetch(`http://localhost:8080/api/card/${cardId}`, {
+        await fetch(`http://localhost:8080/api/card/updateState`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({state_id: stateId})
+            body: JSON.stringify({
+                activePosition: activeData.position,
+                overPosition: 0,
+                activeStateId: activeData.state_id,
+                overStateId: overId,
+                activeCardId: activeId
+            })
         })
             .then(response => response.json())
             .then(() => {
@@ -57,7 +115,10 @@ export function StatesContainer() {
 
     return (
         <>
-            <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+            <DndContext 
+                onDragStart={handleDragStart} 
+                onDragEnd={handleDragEnd}
+            >
                 <div className="flex flex-row mt-12 overflow-x-auto w-full h-[85%] ">
                     {states.length > 0 ? (
                         states.map((state) => (
@@ -83,7 +144,7 @@ export function StatesContainer() {
                 <NewStateModal open={openNewStateModal} setOpen={setOpenNewStateModal} position={states.length}/>
                 <DragOverlay dropAnimation={null}>
                     {activeId ? (
-                        <Card cardProps={activeCard}/>
+                        <Card cardProps={{...activeCard,id:" "}}/>
                     ) : null}
                 </DragOverlay>
             </DndContext>
