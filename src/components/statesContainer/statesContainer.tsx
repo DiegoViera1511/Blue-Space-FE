@@ -37,96 +37,44 @@ export function StatesContainer() {
         
         const overData = over.data.current
         
-        if ((overData as StateType).project_id === undefined){
-            
+        //Check if overData is a StateType or a CardType
+        if ((overData as StateType).project_id === undefined) {
             const overCard = overData as CardType
             
             if (activeData.state_id === overCard.state_id){
-                if (activeData.position > overCard.position){
-                    await fetch(`http://localhost:8080/api/card/positionRange`,{
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({start: overCard.position, end: activeData.position - 1, value: 1, state_id: overCard.state_id})
+                if (activeData.position === overCard.position) return
+                await fetch('http://localhost:8080/api/card/sortPositions',{
+                    method:'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        activePosition: activeData.position,
+                        overPosition: overCard.position,
+                        state_id: activeData.state_id,
+                        activeCardId: activeId
                     })
-                        .then(response => response.json())
-                        .then(() => {
-                            handleRefreshState()
-                        })
-                        .catch(error => console.log(error))
-                    await fetch(`http://localhost:8080/api/card/${activeId}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({position: overCard.position})
+                })
+                    .then(response => response.json())
+                    .then(() => {
+                        handleRefreshState()
                     })
-                        .then(response => response.json())
-                        .then(() => {
-                            handleRefreshState()
-                        })
-                        .catch(error => console.log(error))
-                }else if (activeData.position < overCard.position){
-                    await fetch(`http://localhost:8080/api/card/positionRange`,{
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({start: activeData.position + 1, end: overCard.position, value: - 1, state_id: overCard.state_id})
-                    })
-                        .then(response => response.json())
-                        .then(() => {
-                            handleRefreshState()
-                        })
-                        .catch(error => console.log(error))
-                    await fetch(`http://localhost:8080/api/card/${activeId}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({position: overCard.position})
-                    })
-                        .then(response => response.json())
-                        .then(() => {
-                            handleRefreshState()
-                        })
-                        .catch(error => console.log(error))
-                }
+                    .catch(error => console.log(error))
                 return
             }
             
-            await fetch(`http://localhost:8080/api/card/positionGte`, {
+            await fetch(`http://localhost:8080/api/card/updateState`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({start: activeData.position + 1, value: -1 , state_id: activeData.state_id})
-            })
-                .then(response => response.json())
-                .then(() => {
-                    handleRefreshState()
+                body: JSON.stringify({
+                    activePosition: activeData.position,
+                    overPosition: overCard.position,
+                    activeStateId: activeData.state_id,
+                    overStateId: overCard.state_id,
+                    activeCardId: activeId
                 })
-                .catch(error => console.log(error))
-            await fetch(`http://localhost:8080/api/card/positionGte`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({start: overCard.position, value: 1, state_id: overCard.state_id})
-            })
-                .then(response => response.json())
-                .then(() => {
-                    handleRefreshState()
-                })
-                .catch(error => console.log(error))
-            
-            await fetch(`http://localhost:8080/api/card/${activeId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({state_id: overCard.state_id , position: overCard.position})
             })
                 .then(response => response.json())
                 .then(() => {
@@ -137,39 +85,19 @@ export function StatesContainer() {
         }
         
         if (activeData.state_id === overId) return
-        
-        await fetch(`http://localhost:8080/api/card/positionGte`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({start: 0, value: 1, state_id: overId})
-        })
-            .then(response => response.json())
-            .then(() => {
-                handleRefreshState()
-            })
-            .catch(error => console.log(error))
 
-        await fetch(`http://localhost:8080/api/card/positionGte`, {
+        await fetch(`http://localhost:8080/api/card/updateState`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({start: activeData.position + 1, value: -1, state_id: activeData.state_id})
-        })
-            .then(response => response.json())
-            .then(() => {
-                handleRefreshState()
+            body: JSON.stringify({
+                activePosition: activeData.position,
+                overPosition: 0,
+                activeStateId: activeData.state_id,
+                overStateId: overId,
+                activeCardId: activeId
             })
-            .catch(error => console.log(error))
-
-        await fetch(`http://localhost:8080/api/card/${activeId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({state_id: overId, position: 0})
         })
             .then(response => response.json())
             .then(() => {
