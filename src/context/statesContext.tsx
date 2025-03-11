@@ -10,6 +10,8 @@ interface StatesContextType {
     setSelectedState: React.Dispatch<React.SetStateAction<StateType>>
     selectedCard: CardType,
     setSelectedCard: React.Dispatch<React.SetStateAction<CardType>>
+    activeId: string | null,
+    setActiveId: React.Dispatch<React.SetStateAction<string | null>>
     handleRefreshStateContainer: () => void
     handleRefreshState: () => void
 }
@@ -21,6 +23,7 @@ export function StatesProvider({children}: { children: React.ReactNode }) {
     const [refreshState, setRefreshState] = useState(false)
     const [refreshStateContainer, setRefreshStateContainer] = useState(false)
     const [selectedState, setSelectedState] = useState<StateType>(defaultStateType)
+    const [activeId, setActiveId] = useState<string | null>(null);
     const [selectedCard, setSelectedCard] = useState<CardType>(defaultCardType)
     
     const handleRefreshStateContainer = () => {
@@ -42,7 +45,9 @@ export function StatesProvider({children}: { children: React.ReactNode }) {
                 selectedCard,
                 setSelectedCard,
                 handleRefreshStateContainer,
-                handleRefreshState
+                handleRefreshState,
+                activeId,
+                setActiveId
             }}
         >
             {children}

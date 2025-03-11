@@ -7,6 +7,7 @@ import {StateOptionsModal} from '../modals/stateOptionsModal/stateOptionsModal.t
 import {StatesContext} from '../../context/statesContext.tsx';
 import {NewCardModal} from '../modals/newCardModal/newCardModal.tsx';
 import {useDroppable} from "@dnd-kit/core";
+import {SortableContext, verticalListSortingStrategy} from "@dnd-kit/sortable";
 
 export function State({stateProps}: { stateProps: StateType }) {
 
@@ -16,7 +17,8 @@ export function State({stateProps}: { stateProps: StateType }) {
     } = useContext(StatesContext)
 
     const {setNodeRef} = useDroppable({
-        id: stateProps.id
+        id: stateProps.id,
+        data: {...stateProps}
     });
 
     const [cards, setCards] = useState<CardType[]>([])
@@ -45,26 +47,30 @@ export function State({stateProps}: { stateProps: StateType }) {
                         <EllipsisVertical/>
                     </button>
                 </div>
-
-                <div ref={setNodeRef} className={"flex flex-col"}>
-                    <div
-
-                        className="flex flex-col mt-2 mb-2 max-h-[500px] md:max-h-[530px] overflow-y-auto overflow-x-hidden items-center gap-4 transition-all">
-                        {cards.length > 0 ? (
-                            cards.map((card) => (
-                                <Card key={card.id} cardProps={card}/>
-                            ))
-                        ) : (
-                            <></>
-                        )}
+                <SortableContext
+                    items={cards}
+                    strategy={verticalListSortingStrategy}
+                >
+                    <div ref={setNodeRef} className={"flex flex-col"}>
+                            <div
+                                className="flex flex-col mt-2 mb-2 max-h-[500px] md:max-h-[530px] overflow-y-auto overflow-x-hidden items-center gap-4 transition-all"
+                            >
+                                {cards.length > 0 ? (
+                                    cards.map((card) => (
+                                        <Card key={card.id} cardProps={card}/>
+                                    ))
+                                ) : (
+                                    <></>
+                                )}
+                            </div>
+                        <button className={"m-5 w-fit h-fit"} onClick={() => {
+                            setOpenNewCardModal(true)
+                            setSelectedState(stateProps)
+                        }}>
+                            <Plus/>
+                        </button>
                     </div>
-                    <button className={"m-5 w-fit h-fit"} onClick={() => {
-                        setOpenNewCardModal(true)
-                        setSelectedState(stateProps)
-                    }}>
-                        <Plus/>
-                    </button>
-                </div>
+                </SortableContext>
             </div>
             <StateOptionsModal open={openStateOptionsModal} setOpen={setOpenStateOptionsModal}/>
             <NewCardModal open={openNewCardModal} setOpen={setOpenNewCardModal} position={cards.length}/>
