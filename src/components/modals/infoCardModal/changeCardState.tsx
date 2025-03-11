@@ -14,7 +14,7 @@ export function ChangeCardState({onClick}: ChangeCardStateProps) {
     const [states, setStates] = useState<StateType[]>([])
     const [stateName, setStateName] = useState('')
     const {selectedProject} = useContext(UserContext)
-    const {selectedCard, setSelectedCard, handleRefreshState} = useContext(StatesContext)
+    const {selectedCard, handleRefreshState} = useContext(StatesContext)
 
     const getAllProjectStates = () => {
         fetch(`http://localhost:8080/api/state?project_id=${selectedProject.id}`)
@@ -23,17 +23,22 @@ export function ChangeCardState({onClick}: ChangeCardStateProps) {
             .catch(error => console.log(error))
     }
 
-    const handleChangeState = (state_id: string) => {
-        fetch(`http://localhost:8080/api/card/${selectedCard.id}`, {
+    const handleChangeState = async (state_id: string) => {
+        await fetch(`http://localhost:8080/api/card/updateState`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({state_id: state_id})
+            body: JSON.stringify({
+                activePosition: selectedCard.position,
+                overPosition: 0,
+                activeStateId: selectedCard.state_id,
+                overStateId: state_id,
+                activeCardId: selectedCard.id
+            })
         })
             .then(response => response.json())
-            .then((data) => {
-                setSelectedCard(data)
+            .then(() => {
                 handleRefreshState()
             })
             .catch(error => console.log(error))
