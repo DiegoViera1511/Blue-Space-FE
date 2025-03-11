@@ -29,17 +29,32 @@ export function StatesContainer() {
     const handleDragEnd = async (event: DragEndEvent) => {
         setActiveId(null);
         const {active, over} = event
+        const data = event.active.data.current as CardType
         if (!over) return
-
+        if ( data.state_id === over.id) return
+        
         const cardId = active.id as string
         const stateId = over.id as string
+        
+        await fetch(`http://localhost:8080/api/card/position`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({start: 0, value: 1, state_id: stateId})
+        })
+            .then(response => response.json())
+            .then(() => {
+                handleRefreshState()
+            })
+            .catch(error => console.log(error))
 
         await fetch(`http://localhost:8080/api/card/${cardId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({state_id: stateId})
+            body: JSON.stringify({state_id: stateId, position: 0})
         })
             .then(response => response.json())
             .then(() => {

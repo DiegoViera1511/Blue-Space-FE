@@ -11,7 +11,7 @@ export function Card({cardProps}: { cardProps: CardType }) {
     } = useContext(StatesContext)
 
     const [openInfoCardModal, setOpenInfoCardModal] = useState(false)
-
+    
     const {attributes, listeners, setNodeRef, transform} = useDraggable({
         id: cardProps.id,
         data: {...cardProps}
