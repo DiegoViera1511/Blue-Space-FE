@@ -6,6 +6,7 @@ import {Trash2} from 'lucide-react';
 import {Pencil} from 'lucide-react';
 import {SimpleButton} from "../../common/simpleButton/simpleButton.tsx";
 import {Modal} from "../../common/modal/modal.tsx";
+import {httpRequest} from "../../../api";
 
 interface ProjectsModalProps {
     open: boolean,
@@ -21,32 +22,26 @@ export function ProjectsModal({open , setOpen}: ProjectsModalProps) {
     const [moreOptions, setMoreOptions] = useState('id')
     const [editOptions, setEditOptions] = useState('id')
 
-    const handleCreateProject = () => {
+    const handleCreateProject = async () => {
         const newProject: Partial<ProjectType> = {
             username: user,
             name: newProjectName,
         }
-        fetch('http://localhost:8080/api/project', {
+        const response = await httpRequest<ProjectType>({
+            url: '/project',
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newProject)
+            data: newProject
         })
-            .then(response => response.json())
-            .then(data => {
-                setProjects([...projects, data])
-                setNewProjectName('')
-                setOpenCreateProject(false)
-            })
-            .catch(error => console.log(error))
+        setProjects([...projects, response.data ])
+        setNewProjectName('')
+        setOpenCreateProject(false)
     }
 
-    const handleDeleteProject = (id: string) => {
-        fetch(`http://localhost:8080/api/project/${id}`, {
+    const handleDeleteProject = async (id: string) => {
+        await httpRequest({
+            url: `/project/${id}`,
             method: 'DELETE',
         })
-            .then(response => response.json())
             .then(() => {
                 setProjects(projects.filter(p => p.id !== id))
                 setDeleteOptions('id')
@@ -54,27 +49,20 @@ export function ProjectsModal({open , setOpen}: ProjectsModalProps) {
                     setSelectedProject({id: 'id', name: 'Blue-Space', username: 'username'})
                 }
             })
-            .catch(error => console.log(error))
     }
 
-    const handleEditProject = (id: string) => {
-        fetch(`http://localhost:8080/api/project/${id}`, {
+    const handleEditProject = async (id: string) => {
+        const response = await httpRequest<ProjectType>({
+            url: `/project/${id}`,
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({name: newProjectName})
+            data: {name: newProjectName}
         })
-            .then(response => response.json())
-            .then(data => {
-                setProjects(projects.map(p => p.id === id ? data : p))
-                setEditOptions('id')
-                setNewProjectName('')
-                if (selectedProject.id === id) {
-                    setSelectedProject(data)
-                }
-            })
-            .catch(error => console.log(error))
+        setProjects(projects.map(p => p.id === id ? response.data : p))
+        setEditOptions('id')
+        setNewProjectName('')
+        if (selectedProject.id === id) {
+            setSelectedProject(response.data)
+        }
     }
 
     useEffect(() => {

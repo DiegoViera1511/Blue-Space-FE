@@ -4,6 +4,7 @@ import {StateType} from "../../../types.ts";
 import {StatesContext} from "../../../context/statesContext.tsx";
 import {SimpleButton} from "../../common/simpleButton/simpleButton.tsx";
 import {Modal} from "../../common/modal/modal.tsx";
+import {httpRequest} from "../../../api";
 
 interface NewStateModalProps {
     open: boolean,
@@ -17,25 +18,22 @@ export function NewStateModal({open , setOpen,position}: NewStateModalProps) {
     const {handleRefreshStateContainer} = useContext(StatesContext)
     const [newStateName, setNewStateName] = useState('')
 
-    const handleCreateState = () => {
+    const handleCreateState = async () => {
         const newState: Partial<StateType> = {
             position: position,
             project_id: selectedProject.id,
             name: newStateName
         }
-        fetch('http://localhost:8080/api/state', {
+        await httpRequest({
+            url: '/state',
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newState)
+            data: newState
         })
             .then(() => {
                 setNewStateName('')
                 handleRefreshStateContainer()
                 setOpen(false)
             })
-            .catch(error => console.log(error))
     }
     return (
         <Modal open={open} onClose={() => setOpen(false)}>

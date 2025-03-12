@@ -4,6 +4,7 @@ import {StatesContext} from "../../../context/statesContext.tsx";
 import {Modal} from "../../common/modal/modal.tsx";
 import {SimpleButton} from "../../common/simpleButton/simpleButton.tsx";
 import {DeleteWarningModal} from "../deleteWarning/deleteWarningModal.tsx";
+import {httpRequest} from "../../../api";
 
 interface StateOptionsModalProps {
     open: boolean;
@@ -19,34 +20,29 @@ export function StateOptionsModal({open , setOpen} : StateOptionsModalProps) {
     const [editOptions, setEditOptions] = useState(false)
     const [newStateName, setNewStateName] = useState('')
 
-    const handleEditState = (id: string) => {
-        fetch(`http://localhost:8080/api/state/${id}`, {
+    const handleEditState = async (id: string) => {
+        await httpRequest({
+            url: `/state/${id}`,
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({name: newStateName})
+            data: {name: newStateName}
         })
-            .then(response => response.json())
             .then(() => {
                 setEditOptions(false)
                 handleRefreshStateContainer()
                 setOpen(false)
             })
-            .catch(error => console.log(error))
     }
 
-    const handleDeleteState = (id: string) => {
-        fetch(`http://localhost:8080/api/state/${id}`, {
+    const handleDeleteState = async (id: string) => {
+        await httpRequest({
+            url: `/state/${id}`,
             method: 'DELETE',
         })
-            .then(response => response.json())
             .then(() => {
                 setDeleteOptions(false)
                 handleRefreshStateContainer()
                 setOpen(false)
             })
-            .catch(error => console.log(error))
     }
 
     useEffect(() => {

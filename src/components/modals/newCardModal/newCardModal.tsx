@@ -3,6 +3,7 @@ import {CardType} from "../../../types.ts";
 import {StatesContext} from "../../../context/statesContext.tsx";
 import {Modal} from "../../common/modal/modal.tsx";
 import {SimpleButton} from "../../common/simpleButton/simpleButton.tsx";
+import {httpRequest} from "../../../api";
 
 interface NewCardModalProps {
     open: boolean,
@@ -21,26 +22,22 @@ export function NewCardModal({open, setOpen, position}: NewCardModalProps) {
         setNewCardText('')
     }, [position]);
 
-    const handleCreateCard = () => {
+    const handleCreateCard = async () => {
         const newCard: Partial<CardType> = {
             position: position,
             title: newCardName,
             text: newCardText,
             state_id: selectedState.id
         }
-        fetch(`http://localhost:8080/api/card`, {
+        await httpRequest({
+            url: '/card',
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newCard)
+            data: newCard
         })
-            .then(response => response.json())
             .then(() => {
                 setOpen(false)
                 handleRefreshState()
             })
-            .catch(error => console.log(error))
     }
 
     return (

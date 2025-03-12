@@ -5,6 +5,7 @@ import {UserType} from "../../../types.ts";
 import {UserContext} from "../../../context/userContext.tsx";
 import {SimpleButton} from "../../common/simpleButton/simpleButton.tsx";
 import {Modal} from "../../common/modal/modal.tsx";
+import {httpRequest} from "../../../api";
 
 interface LogInModalProps {
     open : boolean,
@@ -22,22 +23,20 @@ export function LogInModal({open ,setOpen}: LogInModalProps) {
         e.preventDefault()
         const userData: UserType = {username: username, password: password}
         try {
-            const response = await fetch('http://localhost:8080/api/user/checklogin', {
+            const response = await httpRequest<string>({
+                url: '/user/checklogin',
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(userData)
+                data: userData
             })
             if (response.status === 200) {
-                const token = await response.json()
+                const token = response.data
                 localStorage.setItem('jwt', token)
                 setUser(username)
                 setIsAuth(true)
             } else if (response.status === 404 || response.status === 400) {
                 console.error('Invalid User name or password')
             } else {
-                const {message} = await response.json();
+                const message = response.data;
                 console.error(message)
             }
         } catch (error) {
@@ -45,22 +44,19 @@ export function LogInModal({open ,setOpen}: LogInModalProps) {
         }
     }
 
-    const handleRegister = () => {
+    const handleRegister = async () => {
         if (password !== confirmPassword) {
             alert('Passwords do not match')
             return
         }
         const newUser: UserType = {username: username, password: password}
-        fetch('http://localhost:8080/api/user', {
+        await httpRequest({
+            url: '/user',
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newUser)
+            data: newUser
         })
-            .then(response => response.json())
-            .then((data) => {
-                console.log(data)
+            .then(() => {
+                console.log('User created')
             })
             .catch(error => console.log(error))
     }

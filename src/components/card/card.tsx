@@ -40,7 +40,7 @@ export function Card({cardProps}: { cardProps: CardType }) {
                     setOpenInfoCardModal(true)
                 }}
             >
-                <p>{cardProps.title} {cardProps.position}</p>
+                <p>{cardProps.title}</p>
                 <div
                     {...attributes}
                     {...listeners}

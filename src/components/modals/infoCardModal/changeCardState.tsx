@@ -3,6 +3,7 @@ import {UserContext} from "../../../context/userContext.tsx";
 import {StateType} from "../../../types.ts";
 import {ChevronDown, ChevronRight, ChevronUp, X} from "lucide-react";
 import {StatesContext} from "../../../context/statesContext.tsx";
+import {httpRequest} from "../../../api";
 
 interface ChangeCardStateProps {
     onClick: () => void
@@ -16,28 +17,26 @@ export function ChangeCardState({onClick}: ChangeCardStateProps) {
     const {selectedProject} = useContext(UserContext)
     const {selectedCard, handleRefreshState} = useContext(StatesContext)
 
-    const getAllProjectStates = () => {
-        fetch(`http://localhost:8080/api/state?project_id=${selectedProject.id}`)
-            .then(response => response.json())
-            .then(data => setStates(data))
-            .catch(error => console.log(error))
+    const getAllProjectStates = async () => {
+        const response = await httpRequest<StateType[]>({
+            url:`/state?project_id=${selectedProject.id}`,
+            method:"GET" 
+        })
+        setStates(response.data)
     }
 
     const handleChangeState = async (state_id: string) => {
-        await fetch(`http://localhost:8080/api/card/updateState`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
+        await httpRequest({
+            url:'/card/updateState',
+            method:"PUT",
+            data:{
                 activePosition: selectedCard.position,
                 overPosition: 0,
                 activeStateId: selectedCard.state_id,
                 overStateId: state_id,
                 activeCardId: selectedCard.id
-            })
+            }
         })
-            .then(response => response.json())
             .then(() => {
                 handleRefreshState()
             })
@@ -45,6 +44,7 @@ export function ChangeCardState({onClick}: ChangeCardStateProps) {
     }
 
     useEffect(() => {
+        //Get state name by props
         setChangeState(false)
         fetch(`http://localhost:8080/api/state/${selectedCard.state_id}`)
             .then(response => response.json())

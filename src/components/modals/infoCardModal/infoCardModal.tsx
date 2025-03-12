@@ -19,7 +19,6 @@ export function InfoCardModal({open , setOpen}: InfoCardModalProps) {
     const {
         selectedCard,
         setSelectedCard,
-        setOpenInfoCardModal,
         handleRefreshState
     } = useContext(StatesContext)
 
@@ -65,7 +64,6 @@ export function InfoCardModal({open , setOpen}: InfoCardModalProps) {
         })
             .then(() => {
                 setSelectedCard(defaultCardType)
-                setOpenInfoCardModal(false)
                 setOpenDeleteModal(false)
             })
             .catch(error => console.log(error))

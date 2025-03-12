@@ -8,6 +8,7 @@ import {StatesContext} from "../../context/statesContext.tsx";
 import {DndContext, DragEndEvent, DragStartEvent} from "@dnd-kit/core";
 import {DragOverlay} from "@dnd-kit/core";
 import {Card} from "../card/card.tsx";
+import {httpRequest} from "../../api";
 
 export function StatesContainer() {
 
@@ -43,67 +44,54 @@ export function StatesContainer() {
             
             if (activeData.state_id === overCard.state_id){
                 if (activeData.position === overCard.position) return
-                await fetch('http://localhost:8080/api/card/sortPositions',{
-                    method:'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
+                await httpRequest({
+                    url: '/card/sortPositions',
+                    method: 'PUT',
+                    data: {
                         activePosition: activeData.position,
                         overPosition: overCard.position,
                         state_id: activeData.state_id,
                         activeCardId: activeId
-                    })
+                    }
                 })
-                    .then(response => response.json())
                     .then(() => {
                         handleRefreshState()
                     })
-                    .catch(error => console.log(error))
                 return
             }
-            
-            await fetch(`http://localhost:8080/api/card/updateState`, {
+            await httpRequest({
+                url: '/card/updateState',
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
+                data: {
                     activePosition: activeData.position,
                     overPosition: overCard.position,
                     activeStateId: activeData.state_id,
                     overStateId: overCard.state_id,
                     activeCardId: activeId
-                })
+                }
             })
-                .then(response => response.json())
                 .then(() => {
                     handleRefreshState()
                 })
-                .catch(error => console.log(error))
             return
         }
         
         if (activeData.state_id === overId) return
 
-        await fetch(`http://localhost:8080/api/card/updateState`, {
+        await httpRequest({
+            url: '/card/updateState',
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
+            data: {
                 activePosition: activeData.position,
                 overPosition: 0,
                 activeStateId: activeData.state_id,
                 overStateId: overId,
                 activeCardId: activeId
-            })
+            }
         })
-            .then(response => response.json())
             .then(() => {
                 handleRefreshState()
             })
-            .catch(error => console.log(error))
     }
 
     function handleDragStart(event: DragStartEvent) {
