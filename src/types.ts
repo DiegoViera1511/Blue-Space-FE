@@ -31,3 +31,53 @@ export interface UserType {
 }
 
 export const defaultUserType: UserType = {username: "", password: ""}
+
+export interface UsersToProjectsType {
+    username: string;
+    project_id: string;
+}
+
+export interface UsersToProjectsDto {
+    username: string;
+    project: ProjectType
+}
+
+export interface BaseModalProps {
+    open: boolean,
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export enum NotificationEnum{
+    INVITATION = "Invitation",
+    INFO = "Information",
+}
+
+export enum NotificationStateEnum{
+    UNREAD = "Unread",
+    READ = "Read",
+    ACCEPTED = "Accepted"
+}
+
+export interface NotificationType {
+    id: string,
+    sender_id?: string,
+    receiver_id: string,
+    date: Date,
+    content: string,
+    invitation_project_id?: string,
+    type: NotificationEnum,
+    state: NotificationStateEnum
+}
+
+export const defaultNotificationType: NotificationType = {
+    id: "",
+    sender_id: undefined,
+    receiver_id: "",
+    date: new Date(),
+    content: "",
+    invitation_project_id: undefined,
+    type: NotificationEnum.INFO,
+    state: NotificationStateEnum.UNREAD
+}
+
+
