@@ -1,14 +1,19 @@
 import {createContext, useState} from "react";
 import {ProjectType, defaultProyectType} from "../types.ts";
+import {Socket} from "socket.io-client";
 
 interface UserContextType {
     isAuth: boolean,
     setIsAuth: React.Dispatch<React.SetStateAction<boolean>>,
+    refreshProjects: boolean,
+    setRefreshProjects: React.Dispatch<React.SetStateAction<boolean>>,
     user: string,
     setUser: React.Dispatch<React.SetStateAction<string>>
     selectedProject: ProjectType,
     setSelectedProject: React.Dispatch<React.SetStateAction<ProjectType>>,
     fetchToken: () => void
+    socket: Socket | null,
+    setSocket: React.Dispatch<React.SetStateAction<Socket | null>>,
 }
 
 export const UserContext = createContext<UserContextType>({} as UserContextType);
@@ -18,6 +23,8 @@ export function UserProvider({children}: { children: React.ReactNode }) {
     const [isAuth, setIsAuth] = useState(false)
     const [user, setUser] = useState<string>('')
     const [selectedProject, setSelectedProject] = useState<ProjectType>(defaultProyectType)
+    const [socket, setSocket] = useState<Socket | null>(null);
+    const [refreshProjects, setRefreshProjects] = useState(false)
     
     const fetchToken = async () => {
         const token = localStorage.getItem('jwt')
@@ -47,7 +54,11 @@ export function UserProvider({children}: { children: React.ReactNode }) {
                 setUser,
                 selectedProject,
                 setSelectedProject,
-                fetchToken
+                fetchToken,
+                setSocket,
+                socket,
+                refreshProjects,
+                setRefreshProjects
             }}
         >
             {children}

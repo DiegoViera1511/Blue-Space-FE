@@ -1,9 +1,7 @@
 import {useContext, useEffect, useState} from "react";
-import {ProjectType} from "../../../types.ts";
+import {ProjectType, UsersToProjectsDto} from "../../../types.ts";
 import {UserContext} from "../../../context/userContext.tsx";
-import {EllipsisVertical} from 'lucide-react';
-import {Trash2} from 'lucide-react';
-import {Pencil} from 'lucide-react';
+import {EllipsisVertical, Trash2, Pencil} from 'lucide-react';
 import {SimpleButton} from "../../common/simpleButton/simpleButton.tsx";
 import {Modal} from "../../common/modal/modal.tsx";
 import {httpRequest} from "../../../api";
@@ -14,7 +12,7 @@ interface ProjectsModalProps {
 }
 
 export function ProjectsModal({open , setOpen}: ProjectsModalProps) {
-    const {selectedProject, setSelectedProject, user} = useContext(UserContext)
+    const {selectedProject, setSelectedProject, user , refreshProjects} = useContext(UserContext)
     const [projects, setProjects] = useState<ProjectType[]>([])
     const [openCreateProject, setOpenCreateProject] = useState(false)
     const [newProjectName, setNewProjectName] = useState('')
@@ -32,7 +30,18 @@ export function ProjectsModal({open , setOpen}: ProjectsModalProps) {
             method: 'POST',
             data: newProject
         })
-        setProjects([...projects, response.data ])
+        if (response.status === 201) {
+            setProjects([...projects, response.data])
+            setSelectedProject(response.data)
+            await httpRequest({
+                url: `/usersToProjects`,
+                method: 'POST',
+                data: {
+                    username: user,
+                    project_id: response.data.id
+                }
+            })
+        }
         setNewProjectName('')
         setOpenCreateProject(false)
     }
@@ -46,7 +55,7 @@ export function ProjectsModal({open , setOpen}: ProjectsModalProps) {
                 setProjects(projects.filter(p => p.id !== id))
                 setDeleteOptions('id')
                 if (selectedProject.id === id) {
-                    setSelectedProject({id: 'id', name: 'Blue-Space', username: 'username'})
+                    setSelectedProject({id: '', name: 'Blue-Space', username: 'username'})
                 }
             })
     }
@@ -71,11 +80,14 @@ export function ProjectsModal({open , setOpen}: ProjectsModalProps) {
         setDeleteOptions('id')
         setEditOptions('id')
         setMoreOptions('id')
-        fetch(`http://localhost:8080/api/project?username=${user}`)
+        fetch(`http://localhost:8080/api/usersToProjects/dto?username=${user}`)
             .then(response => response.json())
-            .then(data => setProjects(data))
+            .then(data => {
+                const usersToProjects = data as UsersToProjectsDto[];
+                setProjects(usersToProjects.map(userToProject => userToProject.project))
+            })
             .catch(error => console.log(error))
-    }, [user])
+    }, [user,refreshProjects])
 
     return (
         <Modal open={open} onClose={() => setOpen(false)}>
@@ -131,14 +143,19 @@ export function ProjectsModal({open , setOpen}: ProjectsModalProps) {
                                     >
                                         <p className={"text-ellipsis break-words max-w-[80%]"}>{project.name}</p>
                                     </div>
-                                    <button onClick={() => {
-                                        setMoreOptions(moreOptions === project.id ? 'id' : project.id)
-                                        setEditOptions('id')
-                                        setDeleteOptions('id')
+                                    { project.username === user ?
+                                        <button onClick={() => {
+                                            setMoreOptions(moreOptions === project.id ? 'id' : project.id)
+                                            setEditOptions('id')
+                                            setDeleteOptions('id')
+                                        }
+                                        }>
+                                            <EllipsisVertical/>
+                                        </button>
+                                        :
+                                        <></>
                                     }
-                                    }>
-                                        <EllipsisVertical/>
-                                    </button>
+                                    
                                 </div>
                                 {moreOptions === project.id && (
                                     <div className={"flex flex-col gap-4 p-3  justify-center"}>
@@ -223,6 +240,7 @@ export function ProjectsModal({open , setOpen}: ProjectsModalProps) {
                         <p className={"text-2xl"}>No Projects yet !</p>
                     </div>
                 )}
+                
             </div>
         </Modal>
     )

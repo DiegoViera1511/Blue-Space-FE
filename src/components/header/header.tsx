@@ -1,10 +1,12 @@
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {UserContext} from "../../context/userContext.tsx";
-import {Rocket} from "lucide-react";
+import {Rocket,Bell,Users,BellDot} from "lucide-react";
 import {ProjectsModal} from "../modals/projectsModal/projectsModal.tsx";
 import {HeaderButton} from "./headerButton/headerButton.tsx";
 import {UserContainer} from "../userContainer/userContainer.tsx";
 import {LogOut} from "lucide-react"
+import {NotificationsModal} from "../modals/notificationsModal/notificationsModal.tsx";
+import {ShareProjectModal} from "../modals/shareProjectModal/shareProjectModal.tsx";
 
 interface HeaderProps {
     username: string
@@ -12,11 +14,17 @@ interface HeaderProps {
 
 export function Header({username}: HeaderProps) {
     const [openProjectModal, setOpenProjectModal] = useState(false)
+    const [openNotificationsModal, setOpenNotificationsModal] = useState(false)
+    const [openShareProjectModal, setOpenShareProjectModal] = useState(false)
+    const [notificationsUnread,setNotificationsUnread] = useState(false)
     const {
         selectedProject,
         setIsAuth,
         setUser
     } = useContext(UserContext)
+    useEffect(() => {
+        
+    }, [notificationsUnread]);
     return (
         <>
             <header
@@ -32,9 +40,20 @@ export function Header({username}: HeaderProps) {
                         text={"Projects"}
                         onClick={() => setOpenProjectModal(true)}
                     />
+                    { selectedProject.id === '' ? 
+                        <></> 
+                        :
+                        <HeaderButton
+                            icon={<Users/>}
+                            onClick={() => setOpenShareProjectModal(true)}
+                        />
+                    }
+                    <HeaderButton
+                        icon={notificationsUnread ? <BellDot/> : <Bell/>}
+                        onClick={() => setOpenNotificationsModal(true)}
+                    />
                     <UserContainer
                         name={username}
-                        onClick={() => alert("Developing")}
                     />
                     <HeaderButton
                         icon={<LogOut/>}
@@ -46,7 +65,9 @@ export function Header({username}: HeaderProps) {
                     />
                 </div>
             </header>
+            <ShareProjectModal open={openShareProjectModal} setOpen={setOpenShareProjectModal}/>
             <ProjectsModal open={openProjectModal} setOpen={setOpenProjectModal}/>
+            <NotificationsModal open={openNotificationsModal} setOpen={setOpenNotificationsModal} setNotificationsUnread={setNotificationsUnread}/>
         </>
     )
 }

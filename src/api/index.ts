@@ -18,16 +18,7 @@ export const httpRequest = async <T>({url, method, data, config}: HttpRequestPro
             body: data ? JSON.stringify(data) : undefined,
             ...config
         });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            const apiError: ApiError = {
-                message: errorData.message || 'An error occurred',
-                status: response.status
-            };
-            return Promise.reject(apiError);
-        }
-
+        
         const responseData = await response.json();
         return {
             data: responseData,

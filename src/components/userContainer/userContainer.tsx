@@ -1,13 +1,11 @@
 interface UserContainerProps {
     name: string
-    onClick: () => void
 }
 
-export function UserContainer({name, onClick}: UserContainerProps) {
+export function UserContainer({name}: UserContainerProps) {
     return (
         <div
-            className="flex bg-gray-200 w-12 h-12 items-center justify-center rounded-full"
-            onClick={onClick}
+            className="flex bg-gray-200 min-h-10 max-h-12 aspect-square p-2 items-center justify-center rounded-full"
         >
             <p className="text-slate-500 cursor-pointer">{name[0].toUpperCase()}</p>
         </div>

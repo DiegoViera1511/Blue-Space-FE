@@ -10,5 +10,5 @@ export interface ApiError {
     message: string;
     status: number;
 }
-
-export const apiHost = "http://localhost:8080/api"
+export const backendHost = "http://localhost:8080";
+export const apiHost = backendHost+"/api"
