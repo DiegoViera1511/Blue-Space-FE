@@ -41,21 +41,22 @@ export function NewStateModal({open , setOpen,position}: NewStateModalProps) {
                 className={"flex flex-col p-5 bg-white gap-4 justify-center text-sm w-[250px] sm:w-[500px] "}
             >
                 <p className={"text-2xl font-bold"}>New State</p>
-                <hr/>
                 <input type="text" placeholder={"State name"}
-                       className={" text-sm p-2 border border-gray-400 rounded"}
+                       className={" text-sm p-3 outline-none bg-gray-100 rounded-md"}
                        value={newStateName}
                        onChange={(e) => setNewStateName(e.target.value)}
                 />
-                <div className="flex flex-row gap-4 items-center justify-center">
+                <hr/>
+                <div className="flex flex-row gap-2 items-center justify-start">
                     <SimpleButton
                         onClick={() => setOpen(false)}
                         text={"Cancel"}
+                        cn={"hover:bg-gray-100"}
                     />
                     <SimpleButton
                         onClick={() => handleCreateState()}
                         text={"Create"}
-                        cn={"text-green-500"}
+                        cn={"hover:text-green-500 hover:bg-gray-100"}
                     />
                 </div>
 

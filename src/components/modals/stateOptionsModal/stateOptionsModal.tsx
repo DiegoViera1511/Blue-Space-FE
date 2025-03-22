@@ -20,9 +20,13 @@ export function StateOptionsModal({open , setOpen} : StateOptionsModalProps) {
     const [editOptions, setEditOptions] = useState(false)
     const [newStateName, setNewStateName] = useState('')
 
-    const handleEditState = async (id: string) => {
+    const handleEditState = async () => {
+        if (selectedState.name === newStateName){
+            setEditOptions(false)
+            return
+        }
         await httpRequest({
-            url: `/state/${id}`,
+            url: `/state/${selectedState.id}`,
             method: 'PUT',
             data: {name: newStateName}
         })
@@ -33,9 +37,9 @@ export function StateOptionsModal({open , setOpen} : StateOptionsModalProps) {
             })
     }
 
-    const handleDeleteState = async (id: string) => {
+    const handleDeleteState = async () => {
         await httpRequest({
-            url: `/state/${id}`,
+            url: `/state/${selectedState.id}`,
             method: 'DELETE',
         })
             .then(() => {
@@ -58,18 +62,29 @@ export function StateOptionsModal({open , setOpen} : StateOptionsModalProps) {
                     className={"flex flex-col p-5 bg-white gap-4 justify-start text-sm w-[250px] h-fit sm:w-[500px] "}
                 >
                     <div className={"flex flex-col w-full gap-4"}>
-                        <p className={"text-xl sm:text-2xl"}>{selectedState.name}</p>
-                        <hr/>
-                        <div className={"flex flex-col bg-gray-100 p-2 gap-4 rounded"}>
-                            <SimpleButton
-                                onClick={() => {
-                                    setEditOptions(!editOptions)
-                                    setDeleteOptions(false)
-                                }}
-                                text={"Edit"}
-                                icon={<Pencil/>}
-                                cn={"bg-white"}
-                            />
+                        <div className={"flex flex-row items-center gap-4 justify-between w-full"}>
+                            {editOptions ?
+                                <input
+                                    className={"outline-none w-full text-md font-bold bg-gray-100 rounded-md p-2"}
+                                    type="text"
+                                    value={newStateName}
+                                    onChange={(e) => setNewStateName(e.target.value)}
+                                />
+                                :
+                                <p className={"text-2xl font-bold"}>{selectedState.name}</p>
+                            }
+                            <SimpleButton onClick={() => setEditOptions(true)} text={""} icon={<Pencil/>} cn={"hover:bg-gray-100 hover:text-blue-500"}/>
+                        </div>
+                        {editOptions ?
+                            <div className={"flex flex-row items-center gap-4 justify-start w-fit"}>
+                                <SimpleButton onClick={() => setEditOptions(false)} text={"Cancel"} cn={"hover:bg-gray-100"}/>
+                                <SimpleButton onClick={() => handleEditState()} text={"Save"} cn={"hover:bg-gray-100"}/>
+                            </div>
+                            :
+                            <></>
+                        }
+                        <div className={"flex flex-col p-2 gap-4 rounded"}>
+                            <hr/>
                             <SimpleButton
                                 onClick={() => {
                                     setDeleteOptions(!deleteOptions)
@@ -77,31 +92,8 @@ export function StateOptionsModal({open , setOpen} : StateOptionsModalProps) {
                                 }}
                                 text={"Delete"}
                                 icon={<Trash2/>}
-                                cn={"bg-white text-red-500"}
+                                cn={"hover:bg-gray-100 hover:text-red-500"}
                             />
-                            {editOptions && (
-                                <div className={"flex flex-col gap-4"}>
-                                    <input type="text" placeholder={"State name"}
-                                           className={" text-sm p-2 border border-gray-400 rounded"}
-                                           value={newStateName}
-                                           onChange={(e) => setNewStateName(e.target.value)}
-                                    />
-                                    <div className={"flex flex-row gap-4 justify-center"}>
-                                        <SimpleButton
-                                            onClick={() => setEditOptions(false)}
-                                            text={"Cancel"}
-                                            cn={"bg-white"}
-                                        />
-                                        <SimpleButton
-                                            onClick={() => {
-                                                handleEditState(selectedState.id)
-                                            }}
-                                            text={"Save"}
-                                            cn={"text-green-500 bg-white"}
-                                        />
-                                    </div>
-                                </div>
-                            )}
                         </div>
                     </div>
                 </div>
@@ -111,7 +103,7 @@ export function StateOptionsModal({open , setOpen} : StateOptionsModalProps) {
                 setOpen={setDeleteOptions}
                 objectName={selectedState.name}
                 objectType={"State"}
-                handleDelete={() => handleDeleteState(selectedState.id)}
+                handleDelete={() => handleDeleteState()}
             />
         </>
 

@@ -9,6 +9,7 @@ import {DndContext, DragEndEvent, DragStartEvent} from "@dnd-kit/core";
 import {DragOverlay} from "@dnd-kit/core";
 import {Card} from "../card/card.tsx";
 import {httpRequest} from "../../api";
+import {InfoContainer2, InfoContainerTypes} from "../common/infoContainer2/infoContainer2.tsx";
 
 export function StatesContainer() {
 
@@ -107,14 +108,14 @@ export function StatesContainer() {
                 onDragStart={handleDragStart} 
                 onDragEnd={handleDragEnd}
             >
-                <div className="flex flex-row mt-12 overflow-x-auto w-full h-[85%] ">
+                <div className="flex flex-row overflow-x-auto overscroll-y-none h-full w-full">
                     {states.length > 0 ? (
                         states.map((state) => (
                             <State key={state.id} stateProps={state}/>
                         ))
                     ) : (
                         <div className={"flex w-[90%] h-full items-center justify-center"}>
-                            <p className={"text-xl sm:text-2xl bg-gray-100 rounded-lg border-2 p-2"}>No states yet !</p>
+                            <InfoContainer2 info={"No states yet !"} type={InfoContainerTypes.DEFAULT} cn={"p-3"}/>
                         </div>
                     )}
 

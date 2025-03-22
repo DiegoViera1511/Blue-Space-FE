@@ -5,7 +5,7 @@ import {UserContext} from "../context/userContext.tsx";
 import {Navigate} from "react-router-dom";
 import {StatesProvider} from "../context/statesContext.tsx";
 import {FullScreenContainer} from "../components/common/fullMainContainer/fullScreenContainer.tsx";
-import {InfoContainer} from "../components/infoContainer/infoContainer.tsx";
+import {InfoContainer2, InfoContainerTypes} from "../components/common/infoContainer2/infoContainer2.tsx";
 import io from "socket.io-client";
 import {backendHost} from "../api/api.ts";
 
@@ -25,20 +25,20 @@ export function MainPage() {
         return () => {
             newSocket.disconnect();
         };
-    }, []);
+    }, [selectedProject]);
 
     if (!isAuth) {
         return <Navigate to={"/"}/>
     }
     
     return (
-        <>
+        <div className={`flex flex-col items-center h-screen w-screen justify-start bg-${selectedProject.color}-500 overscroll-y-none`}>
             <Header username={user}/>
-            <main className="flex flex-row w-screen h-screen items-center justify-center bg-gray-200 overscroll-y-none">
+            <main className="flex basis-auto h-[90%] w-full items-start justify-center">
                 <>
                     {selectedProject.id === "" ? (
                             <FullScreenContainer>
-                                <InfoContainer text={"No project selected !"}/>
+                                <InfoContainer2 info={"No project selected !"} type={InfoContainerTypes.DEFAULT} cn={"p-3"}/>
                             </FullScreenContainer>
                         )
                         : (
@@ -48,6 +48,6 @@ export function MainPage() {
                         )}
                 </>
             </main>
-        </>
+        </div>
     )
 }

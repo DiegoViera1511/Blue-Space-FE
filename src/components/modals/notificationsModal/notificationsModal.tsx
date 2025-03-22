@@ -8,6 +8,7 @@ import {UserContainer} from "../../userContainer/userContainer.tsx";
 import {NotificationView} from "./notificationView.tsx";
 import {httpRequest} from "../../../api";
 import {dayFormatDate} from "../../../utils.ts";
+import {InfoContainer2, InfoContainerTypes} from "../../common/infoContainer2/infoContainer2.tsx";
 
 interface NotificationsModalProps {
     open: boolean;
@@ -73,7 +74,7 @@ export function NotificationsModal({open, setOpen,setNotificationsUnread}: Notif
                     }
                 >
                     <div className={"flex flex-row items-center justify-between w-full"}>
-                        <p className={"text-xl sm:text-2xl font-bold"}>Notifications</p>
+                        <p className={"text-xl sm:text-2xl font-medium"}>Notifications</p>
                         <SimpleButton
                             onClick={() => handleClearAll()}
                             text={"Clear all"}
@@ -115,7 +116,7 @@ export function NotificationsModal({open, setOpen,setNotificationsUnread}: Notif
                             ))
                         ) : (
                             <div className={"flex items-center justify-center h-full w-full"}>
-                                <p className={"text-xl"}>No notifications !</p>
+                                <InfoContainer2 info={"No notifications !"} type={InfoContainerTypes.DEFAULT}/>
                             </div>
                         )}
                     </div>
