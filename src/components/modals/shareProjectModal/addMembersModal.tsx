@@ -43,9 +43,7 @@ export function AddMembersModal({open , setOpen} : BaseModalProps) {
             if (notification.status === 201){
                 setMessage({info: `Invitation sent to ${inputValue}` , type: InfoContainerTypes.SUCCESS})
             }
-            //TODO web socket implementation
         }
-        
     }
     useEffect(() => {
         setMessage(null)

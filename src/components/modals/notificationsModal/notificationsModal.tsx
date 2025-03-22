@@ -122,7 +122,7 @@ export function NotificationsModal({open, setOpen,setNotificationsUnread}: Notif
                     </div>
                 </div>
             </Modal>
-            <NotificationView data={selectedNotification as NotificationType} open={openNotification} setOpen={setOpenNotification}/>
+            <NotificationView data={selectedNotification as NotificationType} setRefreshNotifications={setRefresh} open={openNotification} setOpen={setOpenNotification}/>
         </>
 
     );
