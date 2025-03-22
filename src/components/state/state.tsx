@@ -35,10 +35,12 @@ export function State({stateProps}: { stateProps: StateType }) {
     return (
         <>
             <div
-                className="flex flex-col min-w-[75%] sm:min-w-[50%] md:min-w-[40%] lg:min-w-[30%] xl:min-w-[25%] rounded-xl h-fit max-h-[90%] px-1 py-1 m-3 bg-gray-100
-            shadow-lg"
+                className="flex flex-col min-w-[75%] sm:min-w-[50%] md:min-w-[40%] lg:min-w-[30%] xl:min-w-[25%] 
+                rounded-xl h-fit max-h-[100%] p-1 m-3 bg-gray-100 shadow-lg"
             >
-                <div className="flex flex-row items-center justify-between text-ellipsis overflow-hidden px-3 pt-2">
+                <div 
+                    className="flex flex-row items-center justify-between text-ellipsis overflow-hidden px-3 pt-2"
+                >
                     <p className="font-medium">{stateProps.name}</p>
                     <button 
                         className={"hover:bg-gray-200 p-1 rounded-md"}
@@ -49,14 +51,17 @@ export function State({stateProps}: { stateProps: StateType }) {
                         <Ellipsis/>
                     </button>
                 </div>
-                <SortableContext
-                    items={cards}
-                    strategy={verticalListSortingStrategy}
-                >
-                    <div ref={setNodeRef} className={"flex flex-col"}>
+                <div className={"flex flex-col overflow-y-auto w-full items-center justify-start"}>
+                    <SortableContext
+                        items={cards}
+                        strategy={verticalListSortingStrategy}
+                    >
+                        <div ref={setNodeRef} className={"w-full"}>
                             <div
-                                className="flex flex-col my-1 py-2 overflow-y-auto h-[10%] max-h-[400px] sm:max-h-[530px]
-                                 overflow-x-hidden items-center gap-2 transition-all"
+                                className="grid auto-cols-auto items-stretch justify-items-stretch scrollbar-hidden 
+                                m-1 my-1 py-2 h-fit overflow-x-hidden gap-2 transition-all 
+                                [@media(min-height:640px)]:max-h-[440px] [@media(min-height:768px)]:max-h-[570px]
+                                [@media(min-height:999px)]:max-h-[770px] [@media(min-height:500px)]:max-h-[400px]"
                             >
                                 {cards.length > 0 ? (
                                     cards.map((card) => (
@@ -66,14 +71,17 @@ export function State({stateProps}: { stateProps: StateType }) {
                                     <></>
                                 )}
                             </div>
-                        <button className={"items-center justify-center p-2 m-3 mt-0 w-fit h-fit rounded-md hover:bg-gray-200"} onClick={() => {
+                        </div>
+                    </SortableContext>
+                    <div className={"flex items-center justify-start w-full"}>
+                        <button className={"flex items-center justify-start p-2 m-3 mt-0 w-fit h-fit rounded-md hover:bg-gray-200"} onClick={() => {
                             setOpenNewCardModal(true)
                             setSelectedState(stateProps)
                         }}>
                             <Plus/>
                         </button>
                     </div>
-                </SortableContext>
+                </div>
             </div>
             <StateOptionsModal open={openStateOptionsModal} setOpen={setOpenStateOptionsModal}/>
             <NewCardModal open={openNewCardModal} setOpen={setOpenNewCardModal} position={cards.length}/>
