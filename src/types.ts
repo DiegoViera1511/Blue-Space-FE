@@ -2,9 +2,10 @@ export interface ProjectType {
     id: string;
     username: string;
     name: string;
+    color:string;
 }
 
-export const defaultProyectType: ProjectType = {id: "", username: "", name: ""}
+export const defaultProyectType: ProjectType = {id: "", username: "", name: "",color:"blue"}
 
 export interface StateType {
     id: string;
@@ -56,6 +57,19 @@ export enum NotificationStateEnum{
     UNREAD = "Unread",
     READ = "Read",
     ACCEPTED = "Accepted"
+}
+
+export enum Colors {
+    BLUE = "blue",
+    CYAN = "cyan",
+    GREEN = "green",
+    EMERALD = "emerald",
+    YELLOW = "yellow",
+    RED = "red",
+    ORANGE = "orange",
+    PINK = "pink",
+    PURPLE = "purple",  
+    GRAY = "gray"
 }
 
 export interface NotificationType {

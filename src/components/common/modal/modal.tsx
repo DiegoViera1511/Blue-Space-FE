@@ -16,7 +16,7 @@ export function Modal({open, onClose, children}: ModalProps) {
                  className={`bg-white rounded-lg shadow p-6 transition-all items-center justify-center
                  ${open ? "scale-100 opacity-100" : "scale-125 opacity-0"}`}
             >
-                <button onClick={onClose} className={"absolute top-2 right-2 w-fit h-fit"}>
+                <button onClick={onClose} className={"absolute top-2 hover:bg-gray-100 p-1 rounded-md right-2 w-fit h-fit"}>
                     <X/>
                 </button>
                 {children}

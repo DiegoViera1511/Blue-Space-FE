@@ -28,11 +28,10 @@ export function Header({username}: HeaderProps) {
     return (
         <>
             <header
-                className="fixed top-[1%] left-[1%] flex flex-row 
-                rounded-md  backdrop-blur-sm bg-white/30 
-                w-[98%] h-16 box-border shadow-lg items-center justify-between gap-6 px-6"
+                className="flex flex-row rounded-md  backdrop-blur-sm bg-white/30
+                w-[98%] min-h-16 shadow-lg items-center justify-between gap-6 mt-2 px-6"
             >
-                <h1 className="flex items-center max-w[150px] md:max-w[50%] text-xl md:text-2xl bg-gradient-to-r from-cyan-500 to-cyan-700 bg-clip-text text-transparent truncate whitespace-nowrap overflow-hidden">
+                <h1 className="flex items-center max-w-[150px] md:max-w-[50%] text-xl md:text-2xl text-white bg-clip-text text-transparent truncate whitespace-nowrap overflow-hidden">
                     {selectedProject.id !== '' ? selectedProject.name : <Rocket className={"text-black"}/>}
                 </h1>
                 <div className="flex flex-row items-center justify-between gap-6">

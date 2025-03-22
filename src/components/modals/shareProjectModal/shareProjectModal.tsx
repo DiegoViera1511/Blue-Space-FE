@@ -29,32 +29,33 @@ export function ShareProjectModal({open,setOpen} : BaseModalProps) {
                 <div
                     className={"flex flex-col p-5 bg-white gap-4 items-center justify-start text-sm w-[250px] h-[400px] sm:w-[500px]"}
                 >
-                    <div className={"flex flex-row justify-between w-full"}>
-                        <p className={"text-2xl font-bold"}>Users</p>
+                    <div className={"flex flex-row items-center justify-between w-full"}>
+                        <p className={"text-2xl font-medium"}>Users</p>
                         {selectedProject.username === user ?
                             <SimpleButton
                                 onClick={() => setOpenAddMembersModal(true)}
-                                text={"Share"}
+                                text={""}
                                 icon={<UserPlus/>}
-                                cn={"hover:bg-gray-100"}
+                                cn={"hover:bg-gray-100 hover:text-green-500"}
                             />
                             :
                             <></>
                         }
 
                     </div>
-                    <div className={"flex flex-col w-full gap-2 overflow-y-auto"}>
+                    <div className={"flex flex-col w-full py-1 gap-2 overflow-y-auto " +
+                        "[mask-image:linear-gradient(to_bottom,transparent_0%,white_2%,white_98%,transparent_100%)]"}>
                         {usersToProjects.length > 0 ?
                             usersToProjects.map((userToProject) => (
-                                <div key={userToProject.username} className={"flex flex-row items-center p-2 justify-between w-full border-2 rounded-full"}>
+                                <div key={userToProject.username} className={"flex flex-row items-center p-2 justify-between w-full border-2 rounded-xl"}>
                                     <div className={"flex flex-row items-center justify-between gap-4"}>
                                         <UserContainer
                                             name={userToProject.username}
                                         />
-                                        <p className={"text-sm md:text-lg"}>{userToProject.username}</p>
+                                        <p className={"text-sm font-medium"}>{userToProject.username}</p>
                                     </div>
                                     {userToProject.project.username === userToProject.username ?
-                                        <p className={"sm:mx-10 md:text-md text-gray-500"}>Owner</p>
+                                        <p className={"sm:mx-10 text-sm font-medium text-gray-500"}>Owner</p>
                                         :
                                         <></>
                                     }

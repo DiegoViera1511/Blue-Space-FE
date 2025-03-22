@@ -11,10 +11,10 @@ export function Card({cardProps}: { cardProps: CardType }) {
         setSelectedCard,
         activeId
     } = useContext(StatesContext)
-
-    const [openInfoCardModal, setOpenInfoCardModal] = useState(false)
     
-    const {attributes, listeners, setNodeRef, transform,transition} = useSortable({
+    const [openInfoCardModal, setOpenInfoCardModal] = useState(false)
+
+    const {attributes, listeners, setNodeRef, transform, transition} = useSortable({
         id: cardProps.id,
         data: {...cardProps}
     })
@@ -32,19 +32,18 @@ export function Card({cardProps}: { cardProps: CardType }) {
             <div
                 ref={setNodeRef}
                 style={style}
-                className={`flex w-[98%] min-h-10 h-auto bg-white 
-                border shadow border-gray-400 px-2 py-2 text-ellipsis 
-                overflow-hidden rounded-lg cursor-pointer justify-between ${activeId === cardProps.id ? "opacity-0" : ""}`}
+                className={`flex w-[98%] min-h-10 h-auto border-2 border-white hover:border-gray-400 bg-white shadow-sm px-2 py-2 text-ellipsis
+                overflow-hidden rounded-lg cursor-pointer gap-1 items-center justify-between ${activeId === cardProps.id ? "opacity-0" : ""}`}
                 onClick={() => {
                     setSelectedCard(cardProps)
                     setOpenInfoCardModal(true)
                 }}
             >
-                <p>{cardProps.title}</p>
+                <p className={"text-gray-700"}>{cardProps.title}</p>
                 <div
                     {...attributes}
                     {...listeners}
-                    className={"hover:cursor-grab"}
+                    className={"flex hover:cursor-grab items-center justify-center"}
                 >
                     <GripVertical className={"text-gray-400"}/>
                 </div>

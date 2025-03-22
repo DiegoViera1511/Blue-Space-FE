@@ -1,4 +1,4 @@
-import {EllipsisVertical} from 'lucide-react';
+import {Ellipsis} from 'lucide-react';
 import {Plus} from "lucide-react";
 import {Card} from "../card/card.tsx";
 import {useContext, useEffect, useState} from "react";
@@ -35,16 +35,18 @@ export function State({stateProps}: { stateProps: StateType }) {
     return (
         <>
             <div
-                className="flex flex-col min-w-[75%] sm:min-w-[50%] md:min-w-[40%] lg:min-w-[30%] xl:min-w-[25%] rounded-lg h-fit px-1 py-1 m-3 bg-gray-100
+                className="flex flex-col min-w-[75%] sm:min-w-[50%] md:min-w-[40%] lg:min-w-[30%] xl:min-w-[25%] rounded-xl h-fit max-h-[90%] px-1 py-1 m-3 bg-gray-100
             shadow-lg"
             >
-                <div className="flex flex-row justify-between text-ellipsis overflow-hidden px-3 py-2">
-                    <p className="font-bold">{stateProps.name}</p>
-                    <button onClick={() => {
+                <div className="flex flex-row items-center justify-between text-ellipsis overflow-hidden px-3 pt-2">
+                    <p className="font-medium">{stateProps.name}</p>
+                    <button 
+                        className={"hover:bg-gray-200 p-1 rounded-md"}
+                        onClick={() => {
                         setSelectedState(stateProps)
                         setOpenStateOptionsModal(true)
                     }}>
-                        <EllipsisVertical/>
+                        <Ellipsis/>
                     </button>
                 </div>
                 <SortableContext
@@ -53,7 +55,8 @@ export function State({stateProps}: { stateProps: StateType }) {
                 >
                     <div ref={setNodeRef} className={"flex flex-col"}>
                             <div
-                                className="flex flex-col mt-2 mb-2 max-h-[500px] md:max-h-[530px] overflow-y-auto overflow-x-hidden items-center gap-4 transition-all"
+                                className="flex flex-col my-1 py-2 overflow-y-auto h-[10%] max-h-[400px] sm:max-h-[530px]
+                                 overflow-x-hidden items-center gap-2 transition-all"
                             >
                                 {cards.length > 0 ? (
                                     cards.map((card) => (
@@ -63,7 +66,7 @@ export function State({stateProps}: { stateProps: StateType }) {
                                     <></>
                                 )}
                             </div>
-                        <button className={"m-5 w-fit h-fit"} onClick={() => {
+                        <button className={"items-center justify-center p-2 m-3 mt-0 w-fit h-fit rounded-md hover:bg-gray-200"} onClick={() => {
                             setOpenNewCardModal(true)
                             setSelectedState(stateProps)
                         }}>

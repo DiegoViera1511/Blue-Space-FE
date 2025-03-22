@@ -6,7 +6,7 @@ interface HeaderButtonProps {
 
 export function HeaderButton({text, icon, onClick}: HeaderButtonProps) {
     return (
-        <button className="flex flex-row items-center justify-center text-cyan-700 text-xl md:text-2xl"
+        <button className="flex flex-row items-center justify-center text-white text-xl md:text-2xl"
                 onClick={onClick}
         >
             {text}
