@@ -10,65 +10,69 @@ import {UserContext} from "../../../context/userContext.tsx";
 
 interface NotificationViewProps extends BaseModalProps {
     data: NotificationType
+    setRefreshNotifications: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export function NotificationView(notification: NotificationViewProps) {
+export function NotificationView({open,setOpen,data,setRefreshNotifications}: NotificationViewProps) {
     const [infoContainer, setInfoContainer] = useState<InfoContainerProps2 | null >(null)
     const {setRefreshProjects} = useContext(UserContext)
     
     const handleAcceptInvitation = async () => {
-        if (notification.data.invitation_project_id) {
+        if (data.invitation_project_id) {
             const response = await httpRequest({
                 url: `/usersToProjects`,
                 method: 'POST',
                 data: {
-                    username: notification.data.receiver_id,
-                    project_id: notification.data.invitation_project_id
+                    username: data.receiver_id,
+                    project_id: data.invitation_project_id
                 }
             })
             if (response.status === 201) {
-                setInfoContainer({
-                    info: "Invitation accepted",
-                    type: InfoContainerTypes.SUCCESS
-                })
                 setRefreshProjects((prev) => !prev)
                 await httpRequest({
-                    url:`/notification/${notification.data.id}`,
+                    url:`/notification/${data.id}`,
                     method: 'PUT',
                     data: {
                         state: NotificationStateEnum.ACCEPTED
                     }
                 })
             }
-        }
-    }
-    useEffect(() => {
-        if (notification.data.state === NotificationStateEnum.ACCEPTED) {
             setInfoContainer({
                 info: "Invitation accepted",
                 type: InfoContainerTypes.INFO
             })
-        }else{
+            setRefreshNotifications((prev) => !prev)
+        }
+    }
+    
+    useEffect(() => {
+        if (data.state === NotificationStateEnum.ACCEPTED) {
+            setInfoContainer({
+                info: "Invitation accepted",
+                type: InfoContainerTypes.INFO
+            })
+        }else if (infoContainer) {
             setInfoContainer(null)
         }
-    }, [notification,open]);
+    }, [data.state, open]);
+    
     return (
-        <Modal open={notification.open} onClose={() => notification.setOpen(false)}>
+        <Modal open={open} onClose={() => setOpen(false)}>
             <div className="flex flex-col max-w-56 sm:max-w-xl gap-2">
                 <div className={"flex flex-col items-center justify-between overflow-clip w-full gap-4"}>
                     <div className={"flex flex-row items-center overflow-clip justify-start w-full gap-4"}>
-                        <UserContainer name={notification.data.sender_id ?? "Blue Space"}/>
-                        <p className={"text-sm truncate "}>{notification.data.sender_id ?? "Blue Space"}</p>
+                        <UserContainer name={data.sender_id ?? "Blue Space"}/>
+                        <p className={"text-sm truncate "}>{data.sender_id ?? "Blue Space"}</p>
                     </div>
-                    <p className={"text-nowrap text-sm overflow-clip w-full"}>{fullFormatDate(notification.data.date)}</p>
+                    <p className={"text-nowrap text-sm overflow-clip w-full"}>{fullFormatDate(data.date)}</p>
                 </div>
                 <hr/>
                 <div>
-                    <p className={"flex w-full overflow-clip"}>{notification.data.content}</p>
+                    <p className={"flex w-full overflow-clip"}>{data.content}</p>
                 </div>
-                {notification.data.invitation_project_id ?
+                {data.invitation_project_id ?
                     (infoContainer ?
-                            <InfoContainer2 info={infoContainer.info} type={infoContainer.type}/>
+                            <InfoContainer2 info={infoContainer.info} type={infoContainer.type} cn={"w-fit"}/>
                             :
                             <div>
                                 <SimpleButton
