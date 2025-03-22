@@ -6,6 +6,7 @@ import {SimpleButton} from "../../common/simpleButton/simpleButton.tsx";
 import {Modal} from "../../common/modal/modal.tsx";
 import {httpRequest} from "../../../api";
 import {ProjectInfoModal} from "./projectInfoModal.tsx";
+import {InfoContainer2, InfoContainerTypes} from "../../common/infoContainer2/infoContainer2.tsx";
 
 interface ProjectsModalProps {
     open: boolean,
@@ -131,7 +132,7 @@ export function ProjectsModal({open, setOpen}: ProjectsModalProps) {
                         </div>
                     ) : (
                         <div className='flex w-full h-full bg-white items-center justify-center'>
-                            <p className={"text-2xl"}>No Projects yet !</p>
+                            <InfoContainer2 info={"No projects !"} type={InfoContainerTypes.DEFAULT} cn={"p-2"} />
                         </div>
                     )}
                 </div>
