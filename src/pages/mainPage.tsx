@@ -34,7 +34,7 @@ export function MainPage() {
     return (
         <div className={`flex flex-col items-center h-screen w-screen justify-start bg-${selectedProject.color}-500 overscroll-y-none`}>
             <Header username={user}/>
-            <main className="flex basis-auto h-[90%] w-full items-start justify-center">
+            <main className="flex basis-auto h-[100%] w-full items-start justify-center">
                 <>
                     {selectedProject.id === "" ? (
                             <FullScreenContainer>
