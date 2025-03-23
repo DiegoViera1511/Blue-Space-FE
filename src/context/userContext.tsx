@@ -1,6 +1,8 @@
 import {createContext, useState} from "react";
 import {ProjectType, defaultProyectType} from "../types.ts";
 import {Socket} from "socket.io-client";
+import {localStorageProjectKey, localStorageToken} from "../utils.ts";
+import {useLocalStorage} from "../hooks/useLocalStorage.ts";
 
 interface UserContextType {
     isAuth: boolean,
@@ -22,12 +24,13 @@ export function UserProvider({children}: { children: React.ReactNode }) {
     
     const [isAuth, setIsAuth] = useState(false)
     const [user, setUser] = useState<string>('')
-    const [selectedProject, setSelectedProject] = useState<ProjectType>(defaultProyectType)
+    const [selectedProject, setSelectedProject] = 
+        useLocalStorage<ProjectType>({key:localStorageProjectKey,initialValue:defaultProyectType})
     const [socket, setSocket] = useState<Socket | null>(null);
     const [refreshProjects, setRefreshProjects] = useState(false)
     
     const fetchToken = async () => {
-        const token = localStorage.getItem('jwt')
+        const token = localStorage.getItem(localStorageToken)
         if (token) {
             await fetch('http://localhost:8080/api/user/token/checktoken', {
                 method: 'GET',
@@ -45,6 +48,7 @@ export function UserProvider({children}: { children: React.ReactNode }) {
                 .catch(error => console.log(error))
         }
     }
+    
     return (
         <UserContext.Provider
             value={{

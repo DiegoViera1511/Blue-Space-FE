@@ -12,12 +12,12 @@ export function ShareProjectModal({open,setOpen} : BaseModalProps) {
     const [usersToProjects, setUsersToProjects] = useState<UsersToProjectsDto[]>([])
     const [openAddMembersModal, setOpenAddMembersModal] = useState(false)
     const {selectedProject , user} = useContext(UserContext)
+    
     useEffect(() => {
         if (selectedProject.id === '') return
         fetch(`http://localhost:8080/api/usersToProjects/dto?project_id=${selectedProject.id}`)
             .then(response => response.json())
             .then((data) => {
-                console.log(data)
                 setUsersToProjects(data)
             })
             .catch(error => console.log(error))

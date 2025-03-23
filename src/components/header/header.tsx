@@ -7,6 +7,8 @@ import {UserContainer} from "../userContainer/userContainer.tsx";
 import {LogOut} from "lucide-react"
 import {NotificationsModal} from "../modals/notificationsModal/notificationsModal.tsx";
 import {ShareProjectModal} from "../modals/shareProjectModal/shareProjectModal.tsx";
+import {localStorageProjectKey, localStorageToken} from "../../utils.ts";
+import {defaultProyectType} from "../../types.ts";
 
 interface HeaderProps {
     username: string
@@ -20,8 +22,19 @@ export function Header({username}: HeaderProps) {
     const {
         selectedProject,
         setIsAuth,
+        setSelectedProject,
         setUser
     } = useContext(UserContext)
+    
+    const handleLogout = () => {
+        setIsAuth(false)
+        setUser('')
+        localStorage.removeItem(localStorageToken)
+        localStorage.removeItem(localStorageProjectKey)
+        setSelectedProject(defaultProyectType)
+        
+    }
+    
     useEffect(() => {
         
     }, [notificationsUnread]);
@@ -56,11 +69,7 @@ export function Header({username}: HeaderProps) {
                     />
                     <HeaderButton
                         icon={<LogOut/>}
-                        onClick={() => {
-                            setIsAuth(false)
-                            setUser('')
-                            localStorage.removeItem('jwt')
-                        }}
+                        onClick={() => handleLogout()}
                     />
                 </div>
             </header>
