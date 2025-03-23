@@ -1,4 +1,4 @@
-import {BaseModalProps, Colors, defaultProyectType, ProjectType} from "../../../types.ts";
+import {BaseModalProps, Colors, ProjectType} from "../../../types.ts";
 import {Modal} from "../../common/modal/modal.tsx";
 import {useContext, useEffect, useState} from "react";
 import {SimpleButton} from "../../common/simpleButton/simpleButton.tsx";
@@ -14,7 +14,7 @@ interface ProjectInfoModalProps extends BaseModalProps {
 export function ProjectInfoModal({project, open, setOpen}: ProjectInfoModalProps) {
     const [editName, setEditName] = useState(false)
     const [newProjectName, setNewProjectName] = useState("")
-    const {selectedProject , setSelectedProject,setRefreshProjects} = useContext(UserContext)
+    const {selectedProject, setSelectedProject,setRefreshProjects} = useContext(UserContext)
     const [deleteOptions, setDeleteOptions] = useState(false)
     const [selectedColor,setSelectedColor] = useState("")
     
@@ -52,9 +52,6 @@ export function ProjectInfoModal({project, open, setOpen}: ProjectInfoModalProps
         })
             .then(() => {
                 setRefreshProjects((prev) => !prev)
-                if (selectedProject.id === project.id) {
-                    setSelectedProject(defaultProyectType)
-                }
             })
         setDeleteOptions(false)
         setOpen(false)

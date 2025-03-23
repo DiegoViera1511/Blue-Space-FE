@@ -6,6 +6,7 @@ import {UserContext} from "../../../context/userContext.tsx";
 import {SimpleButton} from "../../common/simpleButton/simpleButton.tsx";
 import {Modal} from "../../common/modal/modal.tsx";
 import {httpRequest} from "../../../api";
+import {localStorageToken} from "../../../utils.ts";
 
 interface LogInModalProps {
     open : boolean,
@@ -21,7 +22,7 @@ export function LogInModal({open ,setOpen}: LogInModalProps) {
 
     const handleLogIn = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        const userData: UserType = {username: username, password: password}
+        const userData: UserType = {username: username, password: password }
         try {
             const response = await httpRequest<string>({
                 url: '/user/checklogin',
@@ -30,7 +31,7 @@ export function LogInModal({open ,setOpen}: LogInModalProps) {
             })
             if (response.status === 200) {
                 const token = response.data
-                localStorage.setItem('jwt', token)
+                localStorage.setItem(localStorageToken, token)
                 setUser(username)
                 setIsAuth(true)
             } else if (response.status === 404 || response.status === 400) {

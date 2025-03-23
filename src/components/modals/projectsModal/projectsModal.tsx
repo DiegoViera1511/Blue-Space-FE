@@ -20,7 +20,11 @@ export function ProjectsModal({open, setOpen}: ProjectsModalProps) {
     const [newProjectName, setNewProjectName] = useState('')
     const [openInfoProject, setOpenInfoProject] = useState(false)
     const [modalProjectInfo, setModalProjectInfo] = useState<ProjectType>(defaultProyectType)
-
+    
+    const handleSelectProject = async (project: ProjectType) => {
+        setSelectedProject(project)
+    }
+    
     const handleCreateProject = async () => {
         const newProject: Partial<ProjectType> = {
             username: user,
@@ -111,7 +115,7 @@ export function ProjectsModal({open, setOpen}: ProjectsModalProps) {
                                     >
                                         <div
                                             className='flex flex-row w-full h-auto overflow-hidden gap-4 items-center'
-                                            onClick={() => setSelectedProject(project)}
+                                            onClick={() => handleSelectProject(project)}
                                         >
                                             <p className={`text-ellipsis font-medium break-words max-w-[80%] text-gray-700`}>{project.name}</p>
                                         </div>

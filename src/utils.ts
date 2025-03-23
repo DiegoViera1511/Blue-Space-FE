@@ -18,3 +18,6 @@ export const hourFormatDate = (date: Date): string => {
     const newDate = dayjs(date);
     return newDate.format('LT');
 }
+
+export const localStorageToken = 'jwt'
+export const localStorageProjectKey = 'lastProjectOpened'
