@@ -2,7 +2,7 @@ import {useContext, useState} from "react";
 import {CardType} from "../../types.ts";
 import {InfoCardModal} from "../modals/infoCardModal/infoCardModal.tsx";
 import {StatesContext} from "../../context/statesContext.tsx";
-import {GripVertical} from "lucide-react";
+import {AlignLeft, GripVertical} from "lucide-react";
 import {useSortable} from "@dnd-kit/sortable";
 import {CSS} from "@dnd-kit/utilities";
 
@@ -39,7 +39,14 @@ export function Card({cardProps}: { cardProps: CardType }) {
                     setOpenInfoCardModal(true)
                 }}
             >
-                <p className={"text-gray-700"}>{cardProps.title}</p>
+                <div className={"flex flex-col"}>
+                    <p className={"text-gray-700"}>{cardProps.title}</p>
+                    {cardProps.text === "" ? 
+                        <></>
+                        :
+                        <AlignLeft size={15} />
+                    }
+                </div> 
                 <div
                     {...attributes}
                     {...listeners}
