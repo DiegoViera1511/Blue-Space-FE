@@ -1,6 +1,6 @@
 import {useContext, useEffect, useState} from "react";
 import {UserContext} from "../../context/userContext.tsx";
-import {Rocket,Bell,Users,BellDot} from "lucide-react";
+import {Rocket,Bell,Users,BellDot,FolderKanban} from "lucide-react";
 import {ProjectsModal} from "../modals/projectsModal/projectsModal.tsx";
 import {HeaderButton} from "./headerButton/headerButton.tsx";
 import {UserContainer} from "../userContainer/userContainer.tsx";
@@ -49,7 +49,7 @@ export function Header({username}: HeaderProps) {
                 </h1>
                 <div className="flex flex-row items-center justify-between gap-6">
                     <HeaderButton
-                        text={"Projects"}
+                        icon={<FolderKanban/>}
                         onClick={() => setOpenProjectModal(true)}
                     />
                     { selectedProject.id === '' ? 
