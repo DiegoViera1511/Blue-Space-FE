@@ -18,13 +18,14 @@ export const defaultStateType: StateType = {id: "", position:0, project_id: "", 
 
 export interface CardType {
     id: string,
-    position: number
+    position: number,
     state_id: string,
     title: string,
-    text: string
+    text: string,
+    user_card: string | null
 }
 
-export const defaultCardType: CardType = {id: "",position: 0, state_id: "", title: "", text: ""}
+export const defaultCardType: CardType = {id: "",position: 0, state_id: "", title: "", text: "", user_card: null}
 
 export interface UserType {
     username: string;

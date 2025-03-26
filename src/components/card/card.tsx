@@ -5,6 +5,7 @@ import {StatesContext} from "../../context/statesContext.tsx";
 import {AlignLeft, GripVertical} from "lucide-react";
 import {useSortable} from "@dnd-kit/sortable";
 import {CSS} from "@dnd-kit/utilities";
+import {UserContainer} from "../userContainer/userContainer.tsx";
 
 export function Card({cardProps}: { cardProps: CardType }) {
     const {
@@ -39,13 +40,21 @@ export function Card({cardProps}: { cardProps: CardType }) {
                     setOpenInfoCardModal(true)
                 }}
             >
-                <div className={"flex flex-col"}>
+                <div className={"flex flex-col gap-1"}>
+                    <div className={"flex flex-row items-center gap-2 justify-start"}>
+                        {
+                            cardProps.user_card ?
+                                <UserContainer name={cardProps.user_card} cn={"min-h-2"} size={"xs"}/>
+                                :
+                                <></>
+                        }
+                        {cardProps.text === "" ?
+                            <></>
+                            :
+                            <AlignLeft size={15} />
+                        }
+                    </div>
                     <p className={"text-gray-700"}>{cardProps.title}</p>
-                    {cardProps.text === "" ? 
-                        <></>
-                        :
-                        <AlignLeft size={15} />
-                    }
                 </div> 
                 <div
                     {...attributes}
