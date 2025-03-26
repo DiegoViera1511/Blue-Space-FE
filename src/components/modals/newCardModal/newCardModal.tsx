@@ -30,7 +30,8 @@ export function NewCardModal({open, setOpen, position}: NewCardModalProps) {
             position: position,
             title: newCardName,
             text: newCardText,
-            state_id: selectedState.id
+            state_id: selectedState.id,
+            user_card: null
         }
         await httpRequest({
             url: '/card',
