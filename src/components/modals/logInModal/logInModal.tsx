@@ -1,6 +1,6 @@
 import {User, Lock, Check} from "lucide-react";
-import {Input_1} from "../../input_1/input_1.tsx";
-import {useContext, useState} from "react";
+import {AuthInput} from "../../authInput/authInput.tsx";
+import {useContext, useEffect, useState} from "react";
 import {UserType} from "../../../types.ts";
 import {UserContext} from "../../../context/userContext.tsx";
 import {SimpleButton} from "../../common/simpleButton/simpleButton.tsx";
@@ -62,31 +62,25 @@ export function LogInModal({open ,setOpen}: LogInModalProps) {
             .catch(error => console.log(error))
     }
 
-    const ContainerInputClassName = "flex flex-row w-full gap-2 items-center justify-center"
+    const ContainerInputClassName = "flex flex-row w-full px-3 items-center justify-center bg-gray-100 rounded-md"
 
+    useEffect(() => {
+        setPassword("");
+        setUsername("");
+        setConfirmPassword("");
+    }, [signIn,open]);
+    
     return (
         <Modal open={open} onClose={() => setOpen(false)}>
             <div className="flex flex-col gap-5 items-center justify-center ">
-                <p className="text-2xl">Welcome !</p>
-                <div className={"flex flex-row items-center justify-around p-1 border-2 rounded gap-1"}>
-                    <div className={`p-1 px-3 cursor-pointer ${signIn ? 'rounded bg-gray-200' : ''}`}
-                         onClick={() => setSignIn(true)}
-                    >
-                        <p>Sign in</p>
-                    </div>
-                    <div className={`p-1 px-3 cursor-pointer ${!signIn ? 'rounded bg-gray-200' : ''}`}
-                         onClick={() => setSignIn(false)}
-                    >
-                        <p>Sign up</p>
-                    </div>
-                </div>
+                <p className="text-2xl font-medium text-sky-800">Welcome !</p>
                 {signIn ?
-                    <form className="flex flex-col w-auto gap-4 border-2 rounded-lg p-3 items-center justify-center"
+                    <form className="flex flex-col w-auto p-3 gap-4 items-center justify-center"
                           onSubmit={handleLogIn}>
-                        <p>Go to your Workspace</p>
+                        <p className={"font-medium"}>Go to your Workspace</p>
                         <div className={ContainerInputClassName}>
                             <label form="register_username"><User/></label>
-                            <Input_1
+                            <AuthInput
                                 id="register_username"
                                 input_type="text"
                                 value={username}
@@ -97,7 +91,7 @@ export function LogInModal({open ,setOpen}: LogInModalProps) {
                         </div>
                         <div className={ContainerInputClassName}>
                             <label form="register_password"><Lock/></label>
-                            <Input_1
+                            <AuthInput
                                 id="register_password"
                                 input_type="password"
                                 value={password}
@@ -106,25 +100,38 @@ export function LogInModal({open ,setOpen}: LogInModalProps) {
                                 placeholder="Password"
                             />
                         </div>
-                        <div className="flex flex-row gap-4 items-center justify-center">
-                            <SimpleButton
-                                onClick={() => setOpen(false)}
-                                text={"Cancel"}
-                            />
+                        <div className="flex flex-row gap-4 w-full items-center justify-center">
                             <SimpleButton
                                 onClick={() => undefined}
-                                text={"Log in"}
+                                text={"Sign in"}
                                 type={"submit"}
+                                cn={"hover:bg-sky-500 hover:text-white w-full"}
                             />
+                        </div>
+                        <div className='relative w-full'>
+                            <div className='absolute inset-0 flex items-center'>
+                                <div className='w-full border-t border-gray-300'></div>
+                            </div>
+                            <div className='relative flex justify-center text-sm'>
+                                <span className='px-2 bg-white text-sky-800'>New to Blue Space ?</span>
+                            </div>
+                        </div>
+                        <div className='flex justify-center text-sm'>
+                            <button 
+                                className={"text-gray-500 hover:text-sky-800"}
+                                onClick={() => setSignIn(false)}
+                            >
+                                Sign up
+                            </button>
                         </div>
                     </form>
                     :
-                    <form className="flex flex-col w-auto gap-4 border-2 rounded-lg p-3 items-center justify-center"
+                    <form className="flex flex-col w-auto gap-4 p-3 items-center justify-center"
                           onSubmit={handleRegister}>
-                        <p>Create New Account</p>
+                        <p className={"font-medium"}>Create New Account</p>
                         <div className={ContainerInputClassName}>
                             <label form="register_username"><User/></label>
-                            <Input_1
+                            <AuthInput
                                 id="register_username"
                                 input_type="text"
                                 value={username}
@@ -135,7 +142,7 @@ export function LogInModal({open ,setOpen}: LogInModalProps) {
                         </div>
                         <div className={ContainerInputClassName}>
                             <label form="register_password"><Lock/></label>
-                            <Input_1
+                            <AuthInput
                                 id="register_password"
                                 input_type="password"
                                 value={password}
@@ -146,7 +153,7 @@ export function LogInModal({open ,setOpen}: LogInModalProps) {
                         </div>
                         <div className={ContainerInputClassName}>
                             <label form="register_password"><Check/></label>
-                            <Input_1
+                            <AuthInput
                                 id="register_confirm"
                                 input_type="password"
                                 value={confirmPassword}
@@ -155,16 +162,29 @@ export function LogInModal({open ,setOpen}: LogInModalProps) {
                                 placeholder="Confirm Password"
                             />
                         </div>
-                        <div className="flex flex-row gap-4 items-center justify-center">
-                            <SimpleButton
-                                onClick={() => setOpen(false)}
-                                text={"Cancel"}
-                            />
+                        <div className="flex flex-row gap-4 w-full items-center justify-center">
                             <SimpleButton
                                 onClick={() => undefined}
                                 text={"Register"}
                                 type={"submit"}
+                                cn={"hover:bg-sky-500 hover:text-white w-full"}
                             />
+                        </div>
+                        <div className='relative w-full'>
+                            <div className='absolute inset-0 flex items-center'>
+                                <div className='w-full border-t border-gray-300'></div>
+                            </div>
+                            <div className='relative flex justify-center text-sm'>
+                                <span className='px-2 bg-white text-sky-800'>Already have an account ?</span>
+                            </div>
+                        </div>
+                        <div className='flex justify-center text-sm'>
+                            <button
+                                className={"text-gray-500 hover:text-sky-800"}
+                                onClick={() => setSignIn(true)}
+                            >
+                                Sign in
+                            </button>
                         </div>
                     </form>
                 }
