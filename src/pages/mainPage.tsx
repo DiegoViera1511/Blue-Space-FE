@@ -25,7 +25,7 @@ export function MainPage() {
         return () => {
             newSocket.disconnect();
         };
-    }, [selectedProject]);
+    }, [user,selectedProject]);
 
     if (!isAuth) {
         return <Navigate to={"/"}/>
