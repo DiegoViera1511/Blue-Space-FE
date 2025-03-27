@@ -73,6 +73,19 @@ export enum Colors {
     GRAY = "gray"
 }
 
+export const BgColors = {
+    [Colors.BLUE] : "bg-blue-500",
+    [Colors.CYAN] : "bg-cyan-500",
+    [Colors.GREEN] : "bg-green-500",
+    [Colors.EMERALD] : "bg-emerald-500",
+    [Colors.YELLOW] : "bg-yellow-500",
+    [Colors.RED] : "bg-red-500",
+    [Colors.ORANGE] : "bg-orange-500",
+    [Colors.PINK] : "bg-pink-500",
+    [Colors.PURPLE] : "bg-purple-500",
+    [Colors.GRAY] : "bg-gray-500"
+}
+
 export interface NotificationType {
     id: string,
     sender_id?: string,

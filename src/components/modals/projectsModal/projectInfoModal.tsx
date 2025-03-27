@@ -1,4 +1,4 @@
-import {BaseModalProps, Colors, ProjectType} from "../../../types.ts";
+import {BaseModalProps, BgColors, Colors, ProjectType} from "../../../types.ts";
 import {Modal} from "../../common/modal/modal.tsx";
 import {useContext, useEffect, useState} from "react";
 import {SimpleButton} from "../../common/simpleButton/simpleButton.tsx";
@@ -89,66 +89,15 @@ export function ProjectInfoModal({project, open, setOpen}: ProjectInfoModalProps
                     }
                     <p className={"font-medium"}>Background color</p>
                     <div className={"grid grid-cols-5 w-fit items-center justify-center gap-5 p-2 border-2 rounded-xl"}>
-                        <div
-                            className={`flex items-center justify-center w-10 h-10 rounded-xl bg-blue-500 cursor-pointer`}
-                            onClick={() => handleChangeColor(Colors.BLUE)}
-                        >
-                            { selectedColor === Colors.BLUE ? <Check color={"white"}/> : <></>}
-                        </div>
-                        <div
-                            className={`flex items-center justify-center w-10 h-10 rounded-xl bg-cyan-500 cursor-pointer`}
-                            onClick={() => handleChangeColor(Colors.CYAN)}
-                        >
-                            { selectedColor === Colors.CYAN ? <Check color={"white"}/> : <></>}
-                        </div>
-                        <div
-                            className={`flex items-center justify-center w-10 h-10 rounded-xl bg-green-500 cursor-pointer`}
-                            onClick={() => handleChangeColor(Colors.GREEN)}
-                        >
-                            { selectedColor === Colors.GREEN ? <Check color={"white"}/> : <></>}
-                        </div>
-                        <div
-                            className={`flex items-center justify-center w-10 h-10 rounded-xl bg-emerald-500 cursor-pointer`}
-                            onClick={() => handleChangeColor(Colors.EMERALD)}
-                        >
-                            { selectedColor === Colors.EMERALD ? <Check color={"white"}/> : <></>}
-                        </div>
-                        <div
-                            className={`flex items-center justify-center w-10 h-10 rounded-xl bg-yellow-500 cursor-pointer`}
-                            onClick={() => handleChangeColor(Colors.YELLOW)}
-                        >
-                            { selectedColor === Colors.YELLOW ? <Check color={"white"}/> : <></>}
-                        </div>
-                        <div
-                            className={`flex items-center justify-center w-10 h-10 rounded-xl bg-red-500 cursor-pointer`}
-                            onClick={() => handleChangeColor(Colors.RED)}
-                        >
-                            { selectedColor === Colors.RED ? <Check color={"white"}/> : <></>}
-                        </div>
-                        <div
-                            className={`flex items-center justify-center w-10 h-10 rounded-xl bg-orange-500 cursor-pointer`}
-                            onClick={() => handleChangeColor(Colors.ORANGE)}
-                        >
-                            { selectedColor === Colors.ORANGE ? <Check color={"white"}/> : <></>}
-                        </div>
-                        <div
-                            className={`flex items-center justify-center w-10 h-10 rounded-xl bg-pink-500 cursor-pointer`}
-                            onClick={() => handleChangeColor(Colors.PINK)}
-                        >
-                            { selectedColor === Colors.PINK ? <Check color={"white"}/> : <></>}
-                        </div>
-                        <div
-                            className={`flex items-center justify-center w-10 h-10 rounded-xl bg-purple-500 cursor-pointer`}
-                            onClick={() => handleChangeColor(Colors.PURPLE)}
-                        >
-                            { selectedColor === Colors.PURPLE ? <Check color={"white"}/> : <></>}
-                        </div>
-                        <div
-                            className={`flex items-center justify-center w-10 h-10 rounded-xl bg-gray-500 cursor-pointer`}
-                            onClick={() => handleChangeColor(Colors.GRAY)}
-                        >
-                            { selectedColor === Colors.GRAY ? <Check color={"white"}/> : <></>}
-                        </div>
+                        {Object.values(Colors).map((color, index) => (
+                            <div
+                                key={index}
+                                className={`flex items-center justify-center w-10 h-10 rounded-xl ${BgColors[color]} cursor-pointer`}
+                                onClick={() => handleChangeColor(color)}
+                            >
+                                { selectedColor === color ? <Check color={"white"}/> : <></>}
+                            </div>
+                        ))}
                     </div>
                     <SimpleButton 
                         onClick={() => setDeleteOptions(true)} 
