@@ -1,9 +1,10 @@
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'OPTIONS' | 'HEAD';
 
 export interface ApiResponse<T> {
-    data: T;
-    status: number;
-    statusText: string;
+    status: number,
+    message: number;
+    errors?: string | null;
+    data?: T | null;
 }
 
 export interface ApiError {

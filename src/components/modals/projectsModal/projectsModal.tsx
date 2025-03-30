@@ -36,7 +36,7 @@ export function ProjectsModal({open, setOpen}: ProjectsModalProps) {
             method: 'POST',
             data: newProject
         })
-        if (response.status === 201) {
+        if (response.status === 201 && response.data) {
             setProjects([...projects, response.data])
             setSelectedProject(response.data)
             await httpRequest({
@@ -58,7 +58,7 @@ export function ProjectsModal({open, setOpen}: ProjectsModalProps) {
         fetch(`http://localhost:8080/api/usersToProjects/dto?username=${user}`)
             .then(response => response.json())
             .then(data => {
-                const usersToProjects = data as UsersToProjectsDto[];
+                const usersToProjects = data.data as UsersToProjectsDto[];
                 setProjects(usersToProjects.map(userToProject => userToProject.project))
             })
             .catch(error => console.log(error))

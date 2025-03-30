@@ -47,7 +47,7 @@ export function InfoCardModal({open , setOpen}: InfoCardModalProps) {
         })
             .then(response => response.json())
             .then((data) => {
-                setSelectedCard(data)
+                setSelectedCard(data.data)
                 handleRefreshState()
             })
             .catch(error => console.log(error))
@@ -74,7 +74,7 @@ export function InfoCardModal({open , setOpen}: InfoCardModalProps) {
         })
             .then(response => response.json())
             .then((data) => {
-                setSelectedCard(data)
+                setSelectedCard(data.data)
                 handleRefreshState()
             })
             .catch(error => console.log(error))
@@ -98,8 +98,8 @@ export function InfoCardModal({open , setOpen}: InfoCardModalProps) {
         setAddDescription(false)
         fetch(`http://localhost:8080/api/usersToProjects/dto?project_id=${selectedProject.id}`)
             .then(response => response.json())
-            .then((data : UsersToProjectsDto[]) => {
-                setUsersProject(data.map(user_to_project => user_to_project.username))
+            .then((data) => {
+                setUsersProject((data.data as UsersToProjectsDto[]).map(user_to_project => user_to_project.username))
             })
             .catch(error => console.log(error))
     }, [selectedCard]);

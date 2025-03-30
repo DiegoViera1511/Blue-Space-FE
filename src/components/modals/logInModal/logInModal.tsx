@@ -31,13 +31,15 @@ export function LogInModal({open ,setOpen}: LogInModalProps) {
             })
             if (response.status === 200) {
                 const token = response.data
-                localStorage.setItem(localStorageToken, token)
+                if (token) {
+                    localStorage.setItem(localStorageToken, token)
+                }
                 setUser(username)
                 setIsAuth(true)
             } else if (response.status === 404 || response.status === 400) {
                 console.error('Invalid User name or password')
             } else {
-                const message = response.data;
+                const message = response.message;
                 console.error(message)
             }
         } catch (error) {

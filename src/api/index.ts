@@ -18,12 +18,12 @@ export const httpRequest = async <T>({url, method, data, config}: HttpRequestPro
             body: data ? JSON.stringify(data) : undefined,
             ...config
         });
-        
         const responseData = await response.json();
         return {
-            data: responseData,
             status: response.status,
-            statusText: response.statusText
+            message: responseData.message,
+            errors: responseData.errors,
+            data: responseData.data
         };
     } catch (error) {
         const apiError: ApiError = {

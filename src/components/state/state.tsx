@@ -28,7 +28,7 @@ export function State({stateProps}: { stateProps: StateType }) {
     useEffect(() => {
         fetch(`http://localhost:8080/api/card?state_id=${stateProps.id}`)
             .then(response => response.json())
-            .then(data => setCards(data))
+            .then(data => setCards(data.data))
             .catch(error => console.log(error))
     }, [stateProps.id, handleRefreshState]);
 

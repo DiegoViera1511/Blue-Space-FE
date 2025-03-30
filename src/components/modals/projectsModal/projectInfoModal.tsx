@@ -28,7 +28,9 @@ export function ProjectInfoModal({project, open, setOpen}: ProjectInfoModalProps
         setNewProjectName(newProjectName)
         setEditName(false)
         if (selectedProject.id === project.id) {
-            setSelectedProject(response.data)
+            if (response.data) {
+                setSelectedProject(response.data)
+            }
         }
     }
     
