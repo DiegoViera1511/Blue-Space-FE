@@ -45,7 +45,7 @@ export function LandingPage() {
                     >
                         <p className="text-white text-3xl sm:text-5xl md:text-6xl lg:text-8xl">Welcome to Blue Space
                             !</p>
-                        <p className="text-white text-md sm:text-2xl md:text-3xl lg:text-4xl">Organize your tasks, boost
+                        <p className="text-white text-md sm:text-2xl md:text-3xl lg:text-4xl">Organize your sex, boost
                             your productivity 🚀</p>
                     </div>
                 </section>

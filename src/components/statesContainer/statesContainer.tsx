@@ -19,14 +19,6 @@ export function StatesContainer() {
     const [openNewStateModal, setOpenNewStateModal] = useState(false)
     const [activeCard, setActiveCard] = useState<CardType>(defaultCardType)
 
-    useEffect(() => {
-        if (selectedProject.id === '') return
-        fetch(`http://localhost:8080/api/state?project_id=${selectedProject.id}`)
-            .then(response => response.json())
-            .then(data => setStates(data))
-            .catch(error => console.log(error))
-    }, [selectedProject.id, refreshStateContainer])
-
     const handleDragEnd = async (event: DragEndEvent) => {
         setActiveId(null);
         const {active, over} = event
@@ -101,6 +93,14 @@ export function StatesContainer() {
         setActiveCard(data)
         setActiveId(id);
     }
+
+    useEffect(() => {
+        if (selectedProject.id === '') return
+        fetch(`http://localhost:8080/api/state?project_id=${selectedProject.id}`)
+            .then(response => response.json())
+            .then(data => setStates(data.data))
+            .catch(error => console.log(error))
+    }, [selectedProject.id, refreshStateContainer])
 
     return (
         <>

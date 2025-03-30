@@ -18,7 +18,7 @@ export function ShareProjectModal({open,setOpen} : BaseModalProps) {
         fetch(`http://localhost:8080/api/usersToProjects/dto?project_id=${selectedProject.id}`)
             .then(response => response.json())
             .then((data) => {
-                setUsersToProjects(data)
+                setUsersToProjects(data.data)
             })
             .catch(error => console.log(error))
     },[selectedProject.id])
